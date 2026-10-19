@@ -1,266 +1,265 @@
 {
- "source": "Ember",
- "note": "PLACEHOLDER VALUES - NOT REAL DATA",
- "years": [
-  {
-   "year": 2000,
-   "coal": 30,
-   "gas": 40,
-   "hydro": 25,
-   "wind": 0.0,
-   "solar": 0,
-   "other_renewables": 1.0,
-   "other_fossil": 8.0
-  },
-  {
-   "year": 2001,
-   "coal": 32,
-   "gas": 45,
-   "hydro": 51,
-   "wind": 1.5,
-   "solar": 0,
-   "other_renewables": 1.6,
-   "other_fossil": 7.7
-  },
-  {
-   "year": 2002,
-   "coal": 34,
-   "gas": 50,
-   "hydro": 43,
-   "wind": 3.0,
-   "solar": 0,
-   "other_renewables": 2.2,
-   "other_fossil": 7.4
-  },
-  {
-   "year": 2003,
-   "coal": 36,
-   "gas": 55,
-   "hydro": 35,
-   "wind": 4.5,
-   "solar": 0,
-   "other_renewables": 2.8,
-   "other_fossil": 7.1
-  },
-  {
-   "year": 2004,
-   "coal": 38,
-   "gas": 60,
-   "hydro": 27,
-   "wind": 6.0,
-   "solar": 0,
-   "other_renewables": 3.4,
-   "other_fossil": 6.8
-  },
-  {
-   "year": 2005,
-   "coal": 40,
-   "gas": 65,
-   "hydro": 53,
-   "wind": 7.5,
-   "solar": 0,
-   "other_renewables": 4.0,
-   "other_fossil": 6.5
-  },
-  {
-   "year": 2006,
-   "coal": 42,
-   "gas": 70,
-   "hydro": 45,
-   "wind": 9.0,
-   "solar": 0,
-   "other_renewables": 4.6,
-   "other_fossil": 6.2
-  },
-  {
-   "year": 2007,
-   "coal": 44,
-   "gas": 40,
-   "hydro": 37,
-   "wind": 10.5,
-   "solar": 0,
-   "other_renewables": 5.2,
-   "other_fossil": 5.9
-  },
-  {
-   "year": 2008,
-   "coal": 46,
-   "gas": 45,
-   "hydro": 29,
-   "wind": 12.0,
-   "solar": 0,
-   "other_renewables": 5.8,
-   "other_fossil": 5.6
-  },
-  {
-   "year": 2009,
-   "coal": 48,
-   "gas": 50,
-   "hydro": 55,
-   "wind": 13.5,
-   "solar": 0,
-   "other_renewables": 6.3999999999999995,
-   "other_fossil": 5.300000000000001
-  },
-  {
-   "year": 2010,
-   "coal": 50,
-   "gas": 55,
-   "hydro": 47,
-   "wind": 15.0,
-   "solar": 0,
-   "other_renewables": 7.0,
-   "other_fossil": 5.0
-  },
-  {
-   "year": 2011,
-   "coal": 52,
-   "gas": 60,
-   "hydro": 39,
-   "wind": 16.5,
-   "solar": 0,
-   "other_renewables": 7.6,
-   "other_fossil": 4.7
-  },
-  {
-   "year": 2012,
-   "coal": 54,
-   "gas": 65,
-   "hydro": 31,
-   "wind": 18.0,
-   "solar": 0,
-   "other_renewables": 8.2,
-   "other_fossil": 4.4
-  },
-  {
-   "year": 2013,
-   "coal": 56,
-   "gas": 70,
-   "hydro": 57,
-   "wind": 19.5,
-   "solar": 2.5,
-   "other_renewables": 8.8,
-   "other_fossil": 4.1
-  },
-  {
-   "year": 2014,
-   "coal": 58,
-   "gas": 40,
-   "hydro": 49,
-   "wind": 21.0,
-   "solar": 5.0,
-   "other_renewables": 9.4,
-   "other_fossil": 3.8
-  },
-  {
-   "year": 2015,
-   "coal": 60,
-   "gas": 45,
-   "hydro": 41,
-   "wind": 22.5,
-   "solar": 7.5,
-   "other_renewables": 10.0,
-   "other_fossil": 3.5
-  },
-  {
-   "year": 2016,
-   "coal": 62,
-   "gas": 50,
-   "hydro": 33,
-   "wind": 24.0,
-   "solar": 10.0,
-   "other_renewables": 10.6,
-   "other_fossil": 3.2
-  },
-  {
-   "year": 2017,
-   "coal": 64,
-   "gas": 55,
-   "hydro": 25,
-   "wind": 25.5,
-   "solar": 12.5,
-   "other_renewables": 11.2,
-   "other_fossil": 2.9000000000000004
-  },
-  {
-   "year": 2018,
-   "coal": 66,
-   "gas": 60,
-   "hydro": 51,
-   "wind": 27.0,
-   "solar": 15.0,
-   "other_renewables": 11.799999999999999,
-   "other_fossil": 2.6000000000000005
-  },
-  {
-   "year": 2019,
-   "coal": 68,
-   "gas": 65,
-   "hydro": 43,
-   "wind": 28.5,
-   "solar": 17.5,
-   "other_renewables": 12.4,
-   "other_fossil": 2.3
-  },
-  {
-   "year": 2020,
-   "coal": 70,
-   "gas": 70,
-   "hydro": 35,
-   "wind": 30.0,
-   "solar": 20.0,
-   "other_renewables": 13.0,
-   "other_fossil": 2.0
-  },
-  {
-   "year": 2021,
-   "coal": 72,
-   "gas": 40,
-   "hydro": 27,
-   "wind": 31.5,
-   "solar": 22.5,
-   "other_renewables": 13.6,
-   "other_fossil": 1.7000000000000002
-  },
-  {
-   "year": 2022,
-   "coal": 74,
-   "gas": 45,
-   "hydro": 53,
-   "wind": 33.0,
-   "solar": 25.0,
-   "other_renewables": 14.2,
-   "other_fossil": 1.4000000000000004
-  },
-  {
-   "year": 2023,
-   "coal": 76,
-   "gas": 50,
-   "hydro": 45,
-   "wind": 34.5,
-   "solar": 27.5,
-   "other_renewables": 14.799999999999999,
-   "other_fossil": 1.1000000000000005
-  },
-  {
-   "year": 2024,
-   "coal": 78,
-   "gas": 55,
-   "hydro": 37,
-   "wind": 36.0,
-   "solar": 30.0,
-   "other_renewables": 15.399999999999999,
-   "other_fossil": 1
-  },
-  {
-   "year": 2025,
-   "coal": 80,
-   "gas": 60,
-   "hydro": 29,
-   "wind": 37.5,
-   "solar": 32.5,
-   "other_renewables": 16.0,
-   "other_fossil": 1
-  }
- ]
+  "source": "Ember via Our World in Data (electricity-mix chart, Turkey). Values in TWh, read from chart coordinates (\u00b10.1 TWh).",
+  "years": [
+    {
+      "year": 2000,
+      "coal": 38.2,
+      "gas": 46.5,
+      "hydro": 30.9,
+      "wind": 0.0,
+      "solar": 0.0,
+      "other_renewables": 0.3,
+      "other_fossil": 8.5
+    },
+    {
+      "year": 2001,
+      "coal": 38.4,
+      "gas": 49.7,
+      "hydro": 24.0,
+      "wind": 0.1,
+      "solar": 0.0,
+      "other_renewables": 0.3,
+      "other_fossil": 9.8
+    },
+    {
+      "year": 2002,
+      "coal": 32.1,
+      "gas": 52.5,
+      "hydro": 33.7,
+      "wind": 0.1,
+      "solar": 0.0,
+      "other_renewables": 0.2,
+      "other_fossil": 9.8
+    },
+    {
+      "year": 2003,
+      "coal": 32.2,
+      "gas": 63.5,
+      "hydro": 35.3,
+      "wind": 0.1,
+      "solar": 0.0,
+      "other_renewables": 0.2,
+      "other_fossil": 8.2
+    },
+    {
+      "year": 2004,
+      "coal": 34.4,
+      "gas": 62.3,
+      "hydro": 46.1,
+      "wind": 0.1,
+      "solar": 0.0,
+      "other_renewables": 0.2,
+      "other_fossil": 6.7
+    },
+    {
+      "year": 2005,
+      "coal": 43.2,
+      "gas": 73.5,
+      "hydro": 39.6,
+      "wind": 0.1,
+      "solar": 0.0,
+      "other_renewables": 0.1,
+      "other_fossil": 5.2
+    },
+    {
+      "year": 2006,
+      "coal": 46.6,
+      "gas": 80.7,
+      "hydro": 44.2,
+      "wind": 0.1,
+      "solar": 0.0,
+      "other_renewables": 0.1,
+      "other_fossil": 4.4
+    },
+    {
+      "year": 2007,
+      "coal": 53.4,
+      "gas": 95.0,
+      "hydro": 35.9,
+      "wind": 0.4,
+      "solar": 0.0,
+      "other_renewables": 0.3,
+      "other_fossil": 6.6
+    },
+    {
+      "year": 2008,
+      "coal": 57.7,
+      "gas": 98.7,
+      "hydro": 33.3,
+      "wind": 0.9,
+      "solar": 0.0,
+      "other_renewables": 0.3,
+      "other_fossil": 7.5
+    },
+    {
+      "year": 2009,
+      "coal": 55.7,
+      "gas": 96.1,
+      "hydro": 36.0,
+      "wind": 1.5,
+      "solar": 0.0,
+      "other_renewables": 0.7,
+      "other_fossil": 4.9
+    },
+    {
+      "year": 2010,
+      "coal": 55.0,
+      "gas": 98.1,
+      "hydro": 51.8,
+      "wind": 2.9,
+      "solar": 0.0,
+      "other_renewables": 1.0,
+      "other_fossil": 2.3
+    },
+    {
+      "year": 2011,
+      "coal": 66.2,
+      "gas": 104.0,
+      "hydro": 52.3,
+      "wind": 4.7,
+      "solar": 0.0,
+      "other_renewables": 1.0,
+      "other_fossil": 1.0
+    },
+    {
+      "year": 2012,
+      "coal": 68.0,
+      "gas": 104.5,
+      "hydro": 57.9,
+      "wind": 5.9,
+      "solar": 0.0,
+      "other_renewables": 1.5,
+      "other_fossil": 1.8
+    },
+    {
+      "year": 2013,
+      "coal": 63.8,
+      "gas": 105.1,
+      "hydro": 59.4,
+      "wind": 7.6,
+      "solar": 0.0,
+      "other_renewables": 2.2,
+      "other_fossil": 2.0
+    },
+    {
+      "year": 2014,
+      "coal": 76.3,
+      "gas": 120.6,
+      "hydro": 40.6,
+      "wind": 8.5,
+      "solar": 0.0,
+      "other_renewables": 3.4,
+      "other_fossil": 2.5
+    },
+    {
+      "year": 2015,
+      "coal": 76.2,
+      "gas": 99.2,
+      "hydro": 67.1,
+      "wind": 11.7,
+      "solar": 0.2,
+      "other_renewables": 4.7,
+      "other_fossil": 2.7
+    },
+    {
+      "year": 2016,
+      "coal": 92.3,
+      "gas": 89.2,
+      "hydro": 67.2,
+      "wind": 15.5,
+      "solar": 1.0,
+      "other_renewables": 6.4,
+      "other_fossil": 2.7
+    },
+    {
+      "year": 2017,
+      "coal": 97.5,
+      "gas": 110.5,
+      "hydro": 58.2,
+      "wind": 17.9,
+      "solar": 2.9,
+      "other_renewables": 8.2,
+      "other_fossil": 2.1
+    },
+    {
+      "year": 2018,
+      "coal": 111.8,
+      "gas": 90.1,
+      "hydro": 59.7,
+      "wind": 19.9,
+      "solar": 7.8,
+      "other_renewables": 9.4,
+      "other_fossil": 1.4
+    },
+    {
+      "year": 2019,
+      "coal": 112.9,
+      "gas": 54.9,
+      "hydro": 88.6,
+      "wind": 21.6,
+      "solar": 9.6,
+      "other_renewables": 11.6,
+      "other_fossil": 1.0
+    },
+    {
+      "year": 2020,
+      "coal": 106.3,
+      "gas": 68.1,
+      "hydro": 77.9,
+      "wind": 24.6,
+      "solar": 11.2,
+      "other_renewables": 13.7,
+      "other_fossil": 0.3
+    },
+    {
+      "year": 2021,
+      "coal": 104.1,
+      "gas": 107.3,
+      "hydro": 55.5,
+      "wind": 31.0,
+      "solar": 13.3,
+      "other_renewables": 16.3,
+      "other_fossil": 0.4
+    },
+    {
+      "year": 2022,
+      "coal": 113.6,
+      "gas": 71.9,
+      "hydro": 66.7,
+      "wind": 34.7,
+      "solar": 15.2,
+      "other_renewables": 17.8,
+      "other_fossil": 0.7
+    },
+    {
+      "year": 2023,
+      "coal": 118.0,
+      "gas": 66.5,
+      "hydro": 63.7,
+      "wind": 33.9,
+      "solar": 18.4,
+      "other_renewables": 18.3,
+      "other_fossil": 0.9
+    },
+    {
+      "year": 2024,
+      "coal": 121.3,
+      "gas": 63.3,
+      "hydro": 74.6,
+      "wind": 36.5,
+      "solar": 25.7,
+      "other_renewables": 18.9,
+      "other_fossil": 1.0
+    },
+    {
+      "year": 2025,
+      "coal": 121.4,
+      "gas": 78.4,
+      "hydro": 57.3,
+      "wind": 39.4,
+      "solar": 37.3,
+      "other_renewables": 19.1,
+      "other_fossil": 1.0
+    }
+  ]
 }
