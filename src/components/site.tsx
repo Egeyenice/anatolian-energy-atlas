@@ -42,7 +42,7 @@ export function SiteFooter() {
   );
 }
 
-export function PageHeader({ kicker, title, intro }: { kicker?: string; title: string; intro?: string }) {
+export function PageHeader({ kicker, title, intro }: { kicker?: string | undefined; title: string; intro?: string | undefined }) {
   return (
     <div className="mb-10 mt-10 md:mt-14">
       {kicker && <p className="mb-2 text-xs font-semibold uppercase tracking-widest text-accent-foreground">{kicker}</p>}
@@ -52,7 +52,7 @@ export function PageHeader({ kicker, title, intro }: { kicker?: string; title: s
   );
 }
 
-export function ChartCard({ title, subtitle, children, controls }: { title: string; subtitle?: string; children: ReactNode; controls?: ReactNode }) {
+export function ChartCard({ title, subtitle, children, controls }: { title: string; subtitle?: string | undefined; children: ReactNode; controls?: ReactNode }) {
   return (
     <figure className="rounded-sm border border-border bg-card p-4 md:p-6">
       <div className="mb-4 flex flex-col gap-3 md:flex-row md:items-start md:justify-between">

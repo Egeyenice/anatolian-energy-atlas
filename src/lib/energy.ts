@@ -48,8 +48,8 @@ export function largestSource(r: YearRow): Source {
 
 export function computeStats(years: YearRow[]) {
   const sorted = [...years].sort((a, b) => a.year - b.year);
-  const first = sorted[0];
-  const last = sorted[sorted.length - 1];
+  const first = sorted[0]!;
+  const last = sorted[sorted.length - 1]!;
   const base = sorted.find((y) => y.year === 2000) ?? first;
   return {
     latestYear: last.year,
