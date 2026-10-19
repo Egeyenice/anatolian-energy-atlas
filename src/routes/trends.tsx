@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import { Area, AreaChart, CartesianGrid, Legend, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import { renewableShare, SOURCE_COLORS, SOURCE_LABELS, SOURCES, toShares, useEnergyData } from "@/lib/energy";
-import { Analysis, ChartCard, DataState, PageHeader } from "@/components/site";
+import { Analysis, ChartCard, DataState, PageHeader, type AnalysisSection } from "@/components/site";
 import { ChartTooltip } from "@/components/ChartTooltip";
 
 export const Route = createFileRoute("/trends")({
@@ -97,7 +97,7 @@ function Trends() {
               </ResponsiveContainer>
             </div>
           </ChartCard>
-          <Analysis />
+          <Analysis sections={MIX_ANALYSIS} note={MIX_ANALYSIS_NOTE} />
 
           <ChartCard title="Share of electricity from renewables" subtitle="Hydro, wind, solar and other renewables, % of total generation" note={last === 2025 ? "2025 data is preliminary." : undefined}>
             <div className="h-72 md:h-96">
