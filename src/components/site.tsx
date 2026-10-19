@@ -35,7 +35,7 @@ export function SiteFooter() {
   return (
     <footer className="mt-20 border-t border-border bg-secondary">
       <div className="mx-auto flex max-w-5xl flex-col gap-2 px-5 py-8 text-sm text-muted-foreground md:flex-row md:justify-between">
-        <span>Data: <a className="underline" href="https://ember-energy.org" target="_blank" rel="noreferrer">Ember</a> (CC BY 4.0)</span>
+        <span>Data: <a className="underline" href="https://ember-energy.org" target="_blank" rel="noreferrer">Ember</a>, via <a className="underline" href="https://ourworldindata.org" target="_blank" rel="noreferrer">Our World in Data</a> (CC BY 4.0)</span>
         <a className="underline" href="https://github.com/your-username/turkey-energy-atlas" target="_blank" rel="noreferrer">Source code on GitHub</a>
       </div>
     </footer>
@@ -63,7 +63,7 @@ export function ChartCard({ title, subtitle, children, controls }: { title: stri
         {controls}
       </div>
       {children}
-      <figcaption className="mt-3 text-xs text-muted-foreground">Data: Ember (CC BY 4.0)</figcaption>
+      <figcaption className="mt-3 text-xs text-muted-foreground">Data: Ember, via Our World in Data (CC BY 4.0)</figcaption>
     </figure>
   );
 }
