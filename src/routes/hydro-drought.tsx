@@ -36,7 +36,7 @@ function Hydro() {
         <DataState status={status === "error" ? "error" : "pending"} />
       ) : (
         <>
-          <ChartCard title="Hydropower generation per year" subtitle="Terawatt-hours (TWh). Drought years shown in a lighter shade.">
+          <ChartCard title="Hydropower generation per year" subtitle="Terawatt-hours (TWh). Drought years shown in a lighter shade." note={years[years.length - 1]?.year === 2025 ? "2025 data is preliminary." : undefined}>
             <div className="mb-3 flex gap-4 text-xs text-muted-foreground">
               <span className="flex items-center gap-1.5"><span className="h-3 w-3 rounded-sm" style={{ background: "var(--src-hydro)" }} />Hydro</span>
               <span className="flex items-center gap-1.5"><span className="h-3 w-3 rounded-sm" style={{ background: "var(--drought)" }} />Drought year</span>
@@ -58,6 +58,7 @@ function Hydro() {
                       content={(p) => {
                         const { x, y, width, value } = p as { x: number; y: number; width: number; value: number };
                         if (!droughtYears.includes(Number(value))) return null;
+                        if (typeof window !== "undefined" && window.innerWidth < 640) return null;
                         return <text x={x + width / 2} y={y - 6} textAnchor="middle" fontSize={10} fill="var(--drought-label)">Drought</text>;
                       }}
                     />
@@ -68,7 +69,7 @@ function Hydro() {
           </ChartCard>
           <Analysis />
 
-          <ChartCard title="Hydro vs. coal + gas" subtitle="Terawatt-hours (TWh) per year">
+          <ChartCard title="Hydro vs. coal + gas" subtitle="Terawatt-hours (TWh) per year" note={years[years.length - 1]?.year === 2025 ? "2025 data is preliminary." : undefined}>
             <div className="h-80 md:h-[420px]">
               <ResponsiveContainer width="100%" height="100%">
                 <LineChart data={compare} margin={{ top: 5, right: 10, left: -10, bottom: 0 }}>

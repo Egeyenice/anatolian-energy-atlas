@@ -40,6 +40,7 @@ function Trends() {
         <>
           <ChartCard
             title="Electricity generation by source"
+            note={last === 2025 ? "2025 data is preliminary." : undefined}
             subtitle={mode === "share" ? "Share of total generation (%)" : "Terawatt-hours (TWh) per year"}
             controls={
               <div className="inline-flex shrink-0 rounded-sm border border-border p-0.5 text-sm" role="group">
@@ -61,7 +62,7 @@ function Trends() {
                 <AreaChart data={stacked} margin={{ top: 5, right: 10, left: -10, bottom: 0 }}>
                   <CartesianGrid stroke="var(--border)" vertical={false} />
                   <XAxis dataKey="year" tick={axis} stroke="var(--border)" minTickGap={20} />
-                  <YAxis tick={axis} stroke="var(--border)" domain={mode === "share" ? [0, 100] : [0, "auto"]} unit={mode === "share" ? "%" : ""} />
+                  <YAxis tick={axis} stroke="var(--border)" width={44} domain={mode === "share" ? [0, 100] : [0, "auto"]} {...(mode === "share" ? { ticks: [0, 25, 50, 75, 100], unit: "%" } : {})} />
                   <Tooltip content={<ChartTooltip unit={unit} />} />
                   <Legend wrapperStyle={{ fontSize: 12 }} />
                   {SOURCES.map((k) => (
@@ -73,7 +74,7 @@ function Trends() {
           </ChartCard>
           <Analysis />
 
-          <ChartCard title="Share of electricity from renewables" subtitle="Hydro, wind, solar and other renewables, % of total generation">
+          <ChartCard title="Share of electricity from renewables" subtitle="Hydro, wind, solar and other renewables, % of total generation" note={last === 2025 ? "2025 data is preliminary." : undefined}>
             <div className="h-72 md:h-96">
               <ResponsiveContainer width="100%" height="100%">
                 <LineChart data={ren} margin={{ top: 5, right: 10, left: -10, bottom: 0 }}>

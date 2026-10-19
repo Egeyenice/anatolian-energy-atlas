@@ -52,6 +52,9 @@ function Index() {
             value={`${s.changePp >= 0 ? "+" : ""}${fmt(s.changePp)} pp`}
             note="Percentage points"
           />
+          {s.latestYear === 2025 && (
+            <p className="text-xs italic text-muted-foreground md:col-span-3">2025 data is preliminary.</p>
+          )}
         </section>
       ) : (
         <DataState status={status === "error" ? "error" : "pending"} />

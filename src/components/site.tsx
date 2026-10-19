@@ -52,7 +52,7 @@ export function PageHeader({ kicker, title, intro }: { kicker?: string | undefin
   );
 }
 
-export function ChartCard({ title, subtitle, children, controls }: { title: string; subtitle?: string | undefined; children: ReactNode; controls?: ReactNode }) {
+export function ChartCard({ title, subtitle, children, controls, note }: { title: string; subtitle?: string | undefined; children: ReactNode; controls?: ReactNode; note?: string | undefined }) {
   return (
     <figure className="rounded-sm border border-border bg-card p-4 md:p-6">
       <div className="mb-4 flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
@@ -63,7 +63,10 @@ export function ChartCard({ title, subtitle, children, controls }: { title: stri
         {controls}
       </div>
       {children}
-      <figcaption className="mt-3 text-xs text-muted-foreground">Data: Ember, via Our World in Data (CC BY 4.0)</figcaption>
+      <figcaption className="mt-3 text-xs text-muted-foreground">
+        Data: Ember, via Our World in Data (CC BY 4.0)
+        {note && <span className="mt-1 block italic">{note}</span>}
+      </figcaption>
     </figure>
   );
 }
