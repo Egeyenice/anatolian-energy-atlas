@@ -62,7 +62,7 @@ function Trends() {
                 <AreaChart data={stacked} margin={{ top: 5, right: 10, left: -10, bottom: 0 }}>
                   <CartesianGrid stroke="var(--border)" vertical={false} />
                   <XAxis dataKey="year" tick={axis} stroke="var(--border)" minTickGap={20} />
-                  <YAxis tick={axis} stroke="var(--border)" width={36} domain={mode === "share" ? [0, 100] : [0, "auto"]} ticks={mode === "share" ? [0, 25, 50, 75, 100] : undefined} unit={mode === "share" ? "%" : ""} />
+                  <YAxis tick={axis} stroke="var(--border)" width={44} domain={mode === "share" ? [0, 100] : [0, "auto"]} ticks={mode === "share" ? [0, 25, 50, 75, 100] : undefined} unit={mode === "share" ? "%" : ""} />
                   <Tooltip content={<ChartTooltip unit={unit} />} />
                   <Legend wrapperStyle={{ fontSize: 12 }} />
                   {SOURCES.map((k) => (
