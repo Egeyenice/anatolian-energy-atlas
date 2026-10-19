@@ -58,6 +58,7 @@ function Hydro() {
                       content={(p) => {
                         const { x, y, width, value } = p as { x: number; y: number; width: number; value: number };
                         if (!droughtYears.includes(Number(value))) return null;
+                        if (typeof window !== "undefined" && window.innerWidth < 640) return null;
                         return <text x={x + width / 2} y={y - 6} textAnchor="middle" fontSize={10} fill="var(--drought-label)">Drought</text>;
                       }}
                     />
