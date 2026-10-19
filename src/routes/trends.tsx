@@ -46,6 +46,16 @@ const MIX_ANALYSIS: AnalysisSection[] = [
 
 const MIX_ANALYSIS_NOTE = "Note: 2025 figures are preliminary.";
 
+const RENEWABLES_ANALYSIS: AnalysisSection[] = [
+  {
+    heading: "Renewables: an uneven but upward trend",
+    paragraphs: [
+      "The share of renewables has not risen in a straight line. It fell sharply in dry years such as 2001, 2008, 2014 and 2021, when hydropower output dropped, and recovered in wetter years. Over the full period, however, the direction is clear: renewables supplied about 25% of Türkiye's electricity in 2000 and about 43% in 2025.",
+    ],
+  },
+];
+
+
 function Trends() {
   const { data, status } = useEnergyData();
   const [mode, setMode] = useState<"share" | "twh">("share");
@@ -112,7 +122,7 @@ function Trends() {
               </ResponsiveContainer>
             </div>
           </ChartCard>
-          <Analysis />
+          <Analysis sections={RENEWABLES_ANALYSIS} />
         </>
       )}
     </div>
