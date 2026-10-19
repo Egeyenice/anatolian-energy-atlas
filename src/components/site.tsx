@@ -71,11 +71,41 @@ export function ChartCard({ title, subtitle, children, controls, note }: { title
   );
 }
 
-export function Analysis({ title, text = "[MY ANALYSIS – to be written]" }: { title?: string; text?: string }) {
+export type AnalysisSection = { heading?: string; paragraphs: string[] };
+
+export function Analysis({
+  title,
+  text = "[MY ANALYSIS – to be written]",
+  sections,
+  note,
+}: {
+  title?: string | undefined;
+  text?: string | undefined;
+  sections?: AnalysisSection[] | undefined;
+  note?: string | undefined;
+}) {
   return (
     <section className="mx-auto my-10 max-w-2xl">
-      {title && <h3 className="mb-2 font-serif text-xl font-semibold text-foreground">{title}</h3>}
-      <p className="text-lg leading-relaxed text-muted-foreground italic">{text}</p>
+      {title && <h3 className="mb-3 font-serif text-xl font-semibold text-foreground">{title}</h3>}
+      {sections ? (
+        <div className="space-y-6">
+          {sections.map((s) => (
+            <div key={s.heading ?? s.paragraphs[0]}>
+              {s.heading && (
+                <h4 className="mb-2 font-serif text-lg font-semibold leading-snug text-foreground">{s.heading}</h4>
+              )}
+              {s.paragraphs.map((p) => (
+                <p key={p} className="mt-3 text-base leading-relaxed text-foreground first:mt-0">
+                  {p}
+                </p>
+              ))}
+            </div>
+          ))}
+        </div>
+      ) : (
+        <p className="text-lg leading-relaxed text-muted-foreground italic">{text}</p>
+      )}
+      {note && <p className="mt-6 text-sm italic leading-relaxed text-muted-foreground">{note}</p>}
     </section>
   );
 }
