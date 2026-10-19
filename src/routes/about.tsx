@@ -34,7 +34,7 @@ function About() {
           Electricity generation data comes from{" "}
           <a className="text-primary underline" href="https://ember-energy.org" target="_blank" rel="noreferrer">Ember</a>.
         </p>
-        <p className="mb-3 text-sm text-muted-foreground">Data: Ember, licensed under CC BY 4.0</p>
+        <p className="mb-3 text-sm text-muted-foreground">Data: Ember, via Our World in Data (CC BY 4.0)</p>
       </Section>
       <Section title="How I built this" />
       <Section title="What I learned" />
