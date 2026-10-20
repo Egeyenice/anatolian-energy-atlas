@@ -67,7 +67,19 @@ function Hydro() {
               </ResponsiveContainer>
             </div>
           </ChartCard>
-          <Analysis />
+          <Analysis
+            sections={[
+              {
+                paragraphs: [
+                  "Hydropower is Türkiye's biggest renewable source of electricity. In 2025 it generated about 57 TWh, more than wind (39 TWh) and solar (37 TWh). Yet it relies on something no one can plan for: how much rain and snow falls each year.",
+                  "There are two kinds of hydropower plants in Türkiye. Run-of-river plants have little or no storage, so they produce whatever the river happens to carry. Dams are different. They hold water back in reservoirs and release it when electricity is needed most. I saw this clearly when I looked at EPİAŞ's hourly data for 19 October 2026: dam output was only about 3.6 GW at midday, but climbed past 12 GW in the early evening, just as demand peaked.",
+                  "Either way, everything starts with rainfall. In wet years, hydropower has covered nearly 30% of Türkiye's electricity. In dry years, that share has dropped to around 16%.",
+                  "So what happens when the rivers run low?",
+                ],
+              },
+            ]}
+          />
+
 
           <ChartCard title="Hydro vs. coal + gas" subtitle="Terawatt-hours (TWh) per year" note={years[years.length - 1]?.year === 2025 ? "2025 data is preliminary." : undefined}>
             <div className="h-80 md:h-[420px]">
