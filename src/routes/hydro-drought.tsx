@@ -79,6 +79,15 @@ function Hydro() {
               </ResponsiveContainer>
             </div>
           </ChartCard>
+          <Analysis
+            sections={[
+              {
+                paragraphs: [
+                  "In drought years such as 2014 and 2021, hydro output fell by roughly 30% compared with the previous year.",
+                ],
+              },
+            ]}
+          />
 
 
           <ChartCard title="Hydro vs. coal + gas" subtitle="Terawatt-hours (TWh) per year" note={years[years.length - 1]?.year === 2025 ? "2025 data is preliminary." : undefined}>
