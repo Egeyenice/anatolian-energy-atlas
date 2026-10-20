@@ -1,0 +1,16 @@
+{
+  "year": 2026,
+  "daysCounted": 292,
+  "recordWindDay": {
+    "date": "2026-07-30",
+    "windGWh": 263.12
+  },
+  "recordSolarDay": {
+    "date": "2026-06-30",
+    "solarGWh": 40.81
+  },
+  "recordRenewableShareDay": {
+    "date": "2026-05-29",
+    "renewableShare": 78.2
+  }
+}
