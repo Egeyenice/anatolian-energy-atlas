@@ -1,2 +1,2 @@
 - [x] Add the exact uploaded capacity data and Trends comparison charts, stats, explainer, source and analysis placeholder.
-- [ ] Verify the comparison charts and mobile layout.
+- [x] Verify the comparison charts and mobile layout.
