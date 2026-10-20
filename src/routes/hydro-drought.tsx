@@ -30,7 +30,7 @@ function Hydro() {
 
   return (
     <div className="mx-auto max-w-5xl px-5">
-      <PageHeader kicker="Hydro & Drought" title="When the rivers run low" intro="Hydropower is a large part of Türkiye's electricity — and it depends on rainfall." />
+      <PageHeader kicker="Hydro & Drought" title="The largest renewable resource" intro="Hydropower is a large part of Türkiye's electricity — and it depends on rainfall." />
       <Analysis title="Introduction" />
       {!data ? (
         <DataState status={status === "error" ? "error" : "pending"} />
