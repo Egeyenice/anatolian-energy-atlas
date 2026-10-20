@@ -31,7 +31,19 @@ function Hydro() {
   return (
     <div className="mx-auto max-w-5xl px-5">
       <PageHeader kicker="Hydro & Drought" title="When the rivers run low" intro="Hydropower is a large part of Türkiye's electricity — and it depends on rainfall." />
-      <Analysis title="Introduction" />
+      <Analysis
+        title="Introduction"
+        sections={[
+          {
+            paragraphs: [
+              "Hydropower is Türkiye's biggest renewable source of electricity. In 2025 it generated about 57 TWh, more than wind (39 TWh) and solar (37 TWh). Yet it relies on something no one can plan for: how much rain and snow falls each year.",
+              "There are two kinds of hydropower plants in Türkiye. Run-of-river plants have little or no storage, so they produce whatever the river happens to carry. Dams are different. They hold water back in reservoirs and release it when electricity is needed most. I saw this clearly when I looked at EPİAŞ's hourly data for 19 October 2026: dam output was only about 3.6 GW at midday, but climbed past 12 GW in the early evening, just as demand peaked.",
+              "Either way, everything starts with rainfall. In wet years, hydropower has covered nearly 30% of Türkiye's electricity. In dry years, that share has dropped to around 16%.",
+              "So what happens when the rivers run low?",
+            ],
+          },
+        ]}
+      />
       {!data ? (
         <DataState status={status === "error" ? "error" : "pending"} />
       ) : (
