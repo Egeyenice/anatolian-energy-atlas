@@ -1,12 +1,43 @@
 import { Bar, BarChart, CartesianGrid, Legend, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import { comparisonYears, useCapacityData } from "@/lib/capacity";
 import { fmt, SOURCE_COLORS, useEnergyData } from "@/lib/energy";
-import { Analysis, DataState } from "@/components/site";
+import { Analysis, DataState, type AnalysisSection } from "@/components/site";
 import { ChartTooltip } from "@/components/ChartTooltip";
 
 const axis = { stroke: "var(--muted-foreground)", fontSize: 12 };
 const fuels = ["solar", "wind"] as const;
 const labels = { solar: "Solar", wind: "Wind" };
+
+const CAPACITY_ANALYSIS: AnalysisSection[] = [
+  {
+    heading: "Why more capacity does not mean more electricity",
+    paragraphs: [
+      "By 2025, Türkiye had almost twice as much solar capacity as wind capacity, yet wind still produced more electricity. This is expected: solar panels generate nothing at night and much less on cloudy days, so their capacity factor is naturally lower. In Türkiye, solar panels typically produce around 16–21% of their theoretical maximum, compared with about 33% for wind turbines.",
+    ],
+  },
+  {
+    heading: "Why Türkiye is investing heavily in solar anyway",
+    paragraphs: ["Several factors explain the rapid growth of solar power:"],
+    bullets: [
+      "*Reducing energy imports.* Every unit of electricity generated from the sun is one that does not have to come from imported gas or coal.",
+      "*Falling costs.* The cost of building a solar plant has fallen sharply over the past decade, and because sunlight is free, operating costs are low.",
+      "*Speed of construction.* A solar plant can be built in months, while coal, gas or hydropower plants often take years. This makes solar one of the fastest ways to add new capacity.",
+      "*Geography.* Türkiye receives more sunshine than most of Europe. Regions such as the Mediterranean coast, Central Anatolia and Southeastern Anatolia offer long sunny seasons and large areas of suitable land, although output is still noticeably lower in winter.",
+    ],
+  },
+  {
+    heading: "The next challenge: storage",
+    paragraphs: [
+      "Solar output peaks around midday, while electricity demand stays high into the evening. As solar capacity grows, Türkiye will need more battery storage to shift midday electricity into the evening hours. Without it, part of the solar potential cannot be used when it is needed most.",
+    ],
+  },
+  {
+    heading: "Conclusion",
+    paragraphs: [
+      "Türkiye's success in solar energy should not be measured only by how much capacity it installs. What matters is how much electricity that capacity actually produces, and how much imported fuel it replaces.",
+    ],
+  },
+];
 
 export function CapacityComparison() {
   const { data, status } = useCapacityData();
@@ -87,7 +118,7 @@ export function CapacityComparison() {
           )}
           <aside className="mt-6 border-l-4 border-primary bg-secondary px-4 py-4 text-sm leading-relaxed text-foreground">Capacity factor = how much a power plant actually produces compared with running at full power every hour of the year.</aside>
           <p className="mt-4 text-xs leading-relaxed text-muted-foreground">Capacity: IRENA (2026). Generation: Ember (2026). Both via Our World in Data (CC BY 4.0). 2025 data preliminary.</p>
-          <Analysis />
+          <Analysis sections={CAPACITY_ANALYSIS} />
         </>
       )}
     </section>

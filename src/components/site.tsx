@@ -71,7 +71,17 @@ export function ChartCard({ title, subtitle, children, controls, note }: { title
   );
 }
 
-export type AnalysisSection = { heading?: string; paragraphs: string[] };
+export type AnalysisSection = { heading?: string; paragraphs: string[]; bullets?: string[] };
+
+function Emphasis({ text }: { text: string }) {
+  return (
+    <>
+      {text.split(/(\*[^*]+\*)/g).map((part, i) =>
+        part.length > 2 && part.startsWith("*") && part.endsWith("*") ? <em key={i}>{part.slice(1, -1)}</em> : part,
+      )}
+    </>
+  );
+}
 
 export function Analysis({
   title,
@@ -96,9 +106,18 @@ export function Analysis({
               )}
               {s.paragraphs.map((p) => (
                 <p key={p} className="mt-3 text-base leading-relaxed text-foreground first:mt-0">
-                  {p}
+                  <Emphasis text={p} />
                 </p>
               ))}
+              {s.bullets && (
+                <ul className="mt-3 list-disc space-y-2 pl-5 text-base leading-relaxed text-foreground marker:text-muted-foreground">
+                  {s.bullets.map((b) => (
+                    <li key={b}>
+                      <Emphasis text={b} />
+                    </li>
+                  ))}
+                </ul>
+              )}
             </div>
           ))}
         </div>
