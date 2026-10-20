@@ -22,7 +22,14 @@ export function SiteHeader() {
               className="whitespace-nowrap rounded px-2 py-1 text-muted-foreground hover:text-foreground"
               activeProps={{ className: "whitespace-nowrap rounded px-2 py-1 font-semibold text-primary underline underline-offset-4" }}
             >
-              {n.label}
+              {"short" in n ? (
+                <>
+                  <span className="sm:hidden">{n.short}</span>
+                  <span className="hidden sm:inline">{n.label}</span>
+                </>
+              ) : (
+                n.label
+              )}
             </Link>
           ))}
         </nav>
