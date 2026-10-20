@@ -4,7 +4,7 @@ import type { ReactNode } from "react";
 const NAV = [
   { to: "/", label: "Home" },
   { to: "/trends", label: "Trends" },
-  { to: "/hydro-drought", label: "Hydro & Drought" },
+  { to: "/hydro-drought", label: "Hydro & Drought", short: "Hydro" },
   { to: "/about", label: "About & Methodology", short: "About" },
 ] as const;
 
@@ -24,8 +24,8 @@ export function SiteHeader() {
             >
               {"short" in n ? (
                 <>
-                  <span className="sm:hidden">{n.short}</span>
-                  <span className="hidden sm:inline">{n.label}</span>
+                  <span className="min-[360px]:hidden">{n.short}</span>
+                  <span className="hidden min-[360px]:inline">{n.label}</span>
                 </>
               ) : (
                 n.label
