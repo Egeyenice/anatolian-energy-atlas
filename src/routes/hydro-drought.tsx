@@ -106,7 +106,24 @@ function Hydro() {
               </ResponsiveContainer>
             </div>
           </ChartCard>
-          <Analysis />
+          <Analysis
+            sections={[
+              {
+                heading: "What fills the gap?",
+                paragraphs: [
+                  "When hydropower falls, natural gas is the main source that takes its place. In earlier droughts, coal helped too: in 2014, hydro output fell by 18.8 TWh, while gas rose by 15.5 TWh and coal by 12.5 TWh.",
+                  "Since 2021, however, coal has barely responded to droughts. In 2021, hydro dropped by 22.4 TWh and gas jumped by 39.2 TWh, while coal actually fell slightly. A likely reason is that Türkiye's imported-coal power plants already run close to their limits: according to Ember, they operated at over 80% of their capacity in 2025. Gas plants, on the other hand, can be turned up and down quickly, which makes gas the natural backup when water runs short.",
+                  "The clearest evidence of this link comes from a wet year. In 2019, total electricity generation barely changed, yet hydropower's share jumped from about 20% to 30%, and gas fell by a similar amount, from 30% to 18%. When the rivers were full, gas simply stepped back.",
+                ],
+              },
+              {
+                heading: "A new helper: solar",
+                paragraphs: [
+                  "Solar power is starting to change this pattern. 2025 was the first drought year in which solar made a real difference: its output grew by 11.6 TWh, equal to about two-thirds of the 17.3 TWh lost from hydropower. As solar capacity keeps growing, future droughts may depend less on gas.",
+                ],
+              },
+            ]}
+          />
           <Analysis title="Conclusion" />
         </>
       )}
