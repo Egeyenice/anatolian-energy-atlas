@@ -4,6 +4,7 @@ import { Area, AreaChart, CartesianGrid, Legend, Line, LineChart, ResponsiveCont
 import { renewableShare, SOURCE_COLORS, SOURCE_LABELS, SOURCES, toShares, useEnergyData } from "@/lib/energy";
 import { Analysis, ChartCard, DataState, PageHeader, type AnalysisSection } from "@/components/site";
 import { ChartTooltip } from "@/components/ChartTooltip";
+import { CapacityComparison } from "@/components/CapacityComparison";
 
 export const Route = createFileRoute("/trends")({
   head: () => ({
@@ -123,6 +124,7 @@ function Trends() {
             </div>
           </ChartCard>
           <Analysis sections={RENEWABLES_ANALYSIS} />
+          <CapacityComparison />
         </>
       )}
     </div>
