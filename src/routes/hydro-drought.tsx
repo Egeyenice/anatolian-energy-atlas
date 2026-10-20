@@ -124,7 +124,16 @@ function Hydro() {
               },
             ]}
           />
-          <Analysis title="Conclusion" />
+          <Analysis
+            title="Conclusion"
+            sections={[
+              {
+                paragraphs: [
+                  "When rainfall drops, Türkiye burns more fossil fuels to keep the lights on, and most of that fuel, especially natural gas, is imported. Every dry year therefore means a higher energy import bill and more pressure on the country's current account deficit.",
+                ],
+              },
+            ]}
+          />
         </>
       )}
     </div>
