@@ -32,9 +32,9 @@ jobs:
           EPIAS_PASSWORD: ${{ secrets.EPIAS_PASSWORD }}
         run: |
           if [ -n "${{ github.event.inputs.backfill }}" ]; then
-            python scripts/fetch_epias.py --backfill "${{ github.event.inputs.backfill }}"
+            python -u scripts/fetch_epias.py --backfill "${{ github.event.inputs.backfill }}"
           else
-            python scripts/fetch_epias.py
+            python -u scripts/fetch_epias.py
           fi
 
       - name: Commit updated data
@@ -42,5 +42,17 @@ jobs:
           git config user.name "energy-data-bot"
           git config user.email "actions@users.noreply.github.com"
           git add public/data/daily
-          git diff --staged --quiet || git commit -m "Update daily energy data"
-          git push
+          if git diff --staged --quiet; then
+            echo "No changes to commit."
+            exit 0
+          fi
+          git commit -m "Update daily energy data"
+          # Other commits (e.g. from Lovable) may have landed while the data was
+          # being fetched, so bring them in first and retry a few times.
+          for i in 1 2 3 4 5; do
+            git pull --rebase origin main && git push origin HEAD:main && exit 0
+            echo "Push failed (attempt $i), retrying in 15 seconds..."
+            sleep 15
+          done
+          echo "Could not push after 5 attempts."
+          exit 1
