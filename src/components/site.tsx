@@ -4,8 +4,8 @@ import type { ReactNode } from "react";
 const NAV = [
   { to: "/", label: "Home" },
   { to: "/trends", label: "Trends" },
-  { to: "/hydro-drought", label: "Hydro & Drought" },
-  { to: "/about", label: "About & Methodology" },
+  { to: "/hydro-drought", label: "Hydro & Drought", short: "Hydro" },
+  { to: "/about", label: "About & Methodology", short: "About" },
 ] as const;
 
 export function SiteHeader() {
@@ -22,7 +22,14 @@ export function SiteHeader() {
               className="whitespace-nowrap rounded px-2 py-1 text-muted-foreground hover:text-foreground"
               activeProps={{ className: "whitespace-nowrap rounded px-2 py-1 font-semibold text-primary underline underline-offset-4" }}
             >
-              {n.label}
+              {"short" in n ? (
+                <>
+                  <span className="min-[440px]:hidden">{n.short}</span>
+                  <span className="hidden min-[440px]:inline">{n.label}</span>
+                </>
+              ) : (
+                n.label
+              )}
             </Link>
           ))}
         </nav>
