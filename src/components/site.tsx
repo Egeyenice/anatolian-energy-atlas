@@ -5,7 +5,7 @@ const NAV = [
   { to: "/", label: "Home" },
   { to: "/trends", label: "Trends" },
   { to: "/hydro-drought", label: "Hydro & Drought" },
-  { to: "/about", label: "About & Methodology" },
+  { to: "/about", label: "About & Methodology", short: "About" },
 ] as const;
 
 export function SiteHeader() {
