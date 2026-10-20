@@ -8,7 +8,7 @@ Outputs (in public/data/daily/):
   records.json  - this year's record days (wind, solar, renewable share)
 
 Usage:
-  python scripts/fetch_epias.py                 # fetch yesterday
+  python scripts/fetch_epias.py                 # fetch the last 7 days (fills gaps, picks up corrections)
   python scripts/fetch_epias.py --backfill 2026-01-01   # fetch every day from that date to yesterday
 
 Credentials come from environment variables EPIAS_USERNAME and EPIAS_PASSWORD
@@ -66,17 +66,26 @@ def get_tgt() -> str:
     return r.text.strip()
 
 
-def fetch_day(tgt: str, day: date) -> list[dict]:
+def fetch_day(tgt: str, day: date, attempts: int = 3) -> list[dict]:
     start = datetime(day.year, day.month, day.day, tzinfo=TR_TZ).isoformat()
     body = {"startDate": start, "endDate": start}
-    r = requests.post(
-        GEN_URL,
-        json=body,
-        headers={"TGT": tgt, "Accept": "application/json", "Content-Type": "application/json"},
-        timeout=60,
-    )
-    if r.status_code != 200:
-        raise RuntimeError(f"{day}: HTTP {r.status_code} {r.text[:300]}")
+    for attempt in range(1, attempts + 1):
+        try:
+            r = requests.post(
+                GEN_URL,
+                json=body,
+                headers={"TGT": tgt, "Accept": "application/json", "Content-Type": "application/json"},
+                timeout=60,
+            )
+            if r.status_code == 200:
+                break
+            err = f"HTTP {r.status_code} {r.text[:300]}"
+        except requests.RequestException as e:
+            err = str(e)
+        if attempt == attempts:
+            raise RuntimeError(f"{day}: {err}")
+        print(f"Retrying {day} ({attempt}/{attempts - 1}) after: {err[:120]}")
+        time.sleep(10 * attempt)
     items = r.json().get("items", [])
     # Keep only rows belonging to the requested day.
     return [it for it in items if str(it.get("date", "")).startswith(day.isoformat())]
@@ -161,7 +170,9 @@ def main():
     args = ap.parse_args()
 
     yesterday = datetime.now(TR_TZ).date() - timedelta(days=1)
-    start = date.fromisoformat(args.backfill) if args.backfill else yesterday
+    # Normal daily runs re-check the last 7 days, so a day skipped because of a
+    # temporary EPİAŞ timeout is filled in automatically on a later run.
+    start = date.fromisoformat(args.backfill) if args.backfill else yesterday - timedelta(days=6)
     days = [start + timedelta(days=i) for i in range((yesterday - start).days + 1)]
 
     history_path = OUT_DIR / "history.json"
@@ -191,6 +202,10 @@ def main():
         if len(days) > 1:
             time.sleep(0.5)
 
+    missing = [d.isoformat() for d in days if d.isoformat() not in by_date]
+    if missing:
+        print(f"Days still missing ({len(missing)}): {', '.join(missing)}")
+
     if latest is None:
         sys.exit("No new data fetched.")
 
@@ -202,4 +217,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()   
+    main()
