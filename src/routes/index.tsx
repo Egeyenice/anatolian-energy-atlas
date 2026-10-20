@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { computeStats, fmt, SOURCE_COLORS, SOURCE_LABELS, useEnergyData } from "@/lib/energy";
 import { DataState } from "@/components/site";
+import { YesterdaySection } from "@/components/YesterdaySection";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -37,6 +38,8 @@ function Index() {
           A look at how coal, gas, hydro, wind and solar have shaped the country's power supply since 2000.
         </p>
       </section>
+
+      <YesterdaySection />
 
       {s ? (
         <section className="grid gap-4 md:grid-cols-3">
