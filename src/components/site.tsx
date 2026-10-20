@@ -24,8 +24,8 @@ export function SiteHeader() {
             >
               {"short" in n ? (
                 <>
-                  <span className="min-[360px]:hidden">{n.short}</span>
-                  <span className="hidden min-[360px]:inline">{n.label}</span>
+                  <span className="min-[440px]:hidden">{n.short}</span>
+                  <span className="hidden min-[440px]:inline">{n.label}</span>
                 </>
               ) : (
                 n.label
