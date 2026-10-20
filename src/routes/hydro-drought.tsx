@@ -82,9 +82,10 @@ function Hydro() {
           <Analysis
             sections={[
               {
-                paragraphs: [
+                bullets: [
                   "In drought years such as 2014 and 2021, hydro output fell by roughly 30% compared with the previous year.",
                 ],
+                large: true,
               },
             ]}
           />
