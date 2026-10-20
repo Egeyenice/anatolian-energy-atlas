@@ -78,7 +78,7 @@ export function ChartCard({ title, subtitle, children, controls, note }: { title
   );
 }
 
-export type AnalysisSection = { heading?: string; paragraphs: string[]; bullets?: string[] };
+export type AnalysisSection = { heading?: string; paragraphs?: string[]; bullets?: string[]; large?: boolean };
 
 function Emphasis({ text }: { text: string }) {
   return (
@@ -107,17 +107,17 @@ export function Analysis({
       {sections ? (
         <div className="space-y-6">
           {sections.map((s) => (
-            <div key={s.heading ?? s.paragraphs[0]}>
+            <div key={s.heading ?? s.paragraphs?.[0] ?? s.bullets?.[0]}>
               {s.heading && (
                 <h4 className="mb-2 font-serif text-lg font-semibold leading-snug text-foreground">{s.heading}</h4>
               )}
-              {s.paragraphs.map((p) => (
-                <p key={p} className="mt-3 text-base leading-relaxed text-foreground first:mt-0">
+              {s.paragraphs?.map((p) => (
+                <p key={p} className={`mt-3 ${s.large ? "text-lg" : "text-base"} leading-relaxed text-foreground first:mt-0`}>
                   <Emphasis text={p} />
                 </p>
               ))}
               {s.bullets && (
-                <ul className="mt-3 list-disc space-y-2 pl-5 text-base leading-relaxed text-foreground marker:text-muted-foreground">
+                <ul className={`mt-3 list-disc space-y-2 pl-5 ${s.large ? "text-lg" : "text-base"} leading-relaxed text-foreground marker:text-muted-foreground first:mt-0`}>
                   {s.bullets.map((b) => (
                     <li key={b}>
                       <Emphasis text={b} />
