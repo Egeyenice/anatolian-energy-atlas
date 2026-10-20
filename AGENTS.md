@@ -9,4 +9,5 @@
 > the editor, so keep the branch in a working state.
 <!-- LOVABLE:END -->
 
-- All charts read /public/data/energy.json via useEnergyData in src/lib/energy.ts; shares are computed, never stored, so the data file can change without code edits.
+- Electricity-generation charts read /public/data/energy.json via useEnergyData; shares are computed, never stored, so the data file can change without code edits.
+- The Trends capacity comparison uses a separate component and /public/data/capacity.json for installed capacity and nullable capacity factors; generation remains sourced from useEnergyData to keep electricity output consistent across charts.
