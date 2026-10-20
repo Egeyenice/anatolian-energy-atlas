@@ -43,7 +43,7 @@ export function SiteFooter() {
     <footer className="mt-20 border-t border-border bg-secondary">
       <div className="mx-auto flex max-w-5xl flex-col gap-2 px-5 py-8 text-sm text-muted-foreground md:flex-row md:justify-between">
         <span>Data: <a className="underline" href="https://ember-energy.org" target="_blank" rel="noreferrer">Ember</a>, via <a className="underline" href="https://ourworldindata.org" target="_blank" rel="noreferrer">Our World in Data</a> (CC BY 4.0)</span>
-        <a className="underline" href="https://github.com/your-username/turkey-energy-atlas" target="_blank" rel="noreferrer">Source code on GitHub</a>
+        <a className="underline" href="https://github.com/Egeyenice/anatolian-energy-atlas" target="_blank" rel="noreferrer">Source code on GitHub</a>
       </div>
     </footer>
   );
