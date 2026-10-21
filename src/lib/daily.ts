@@ -57,6 +57,23 @@ export type DailyHistoryDay = {
   totalsGWh: Record<DailySource, number>;
 };
 
+/** Select the latest year represented by usable daily data, independent of today's date. */
+export function latestHistoryYear(days: DailyHistoryDay[]): DailyHistoryDay[] {
+  const complete = days.filter((day) => day.hoursAvailable === 24);
+  const year = Math.max(...complete.map((day) => Number(day.date.slice(0, 4))));
+  return complete
+    .filter((day) => Number(day.date.slice(0, 4)) === year)
+    .sort((a, b) => a.date.localeCompare(b.date));
+}
+
+export function isPartialMonth(year: number, month: number, days: DailyHistoryDay[]): boolean {
+  const dates = new Set(days.filter((day) =>
+    day.hoursAvailable === 24 && Number(day.date.slice(0, 4)) === year &&
+    Number(day.date.slice(5, 7)) - 1 === month,
+  ).map((day) => day.date));
+  return dates.size < new Date(year, month + 1, 0).getDate();
+}
+
 export function useDailyHistory() {
   return useQuery({
     queryKey: ["daily-history"],

@@ -2,7 +2,7 @@ import { useMemo, useState, type ReactNode } from "react";
 import { Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import { ChartTooltip } from "@/components/ChartTooltip";
 import { Analysis } from "@/components/site";
-import { fmtDate, useDailyHistory, type DailyHistoryDay, type DailySource } from "@/lib/daily";
+import { fmtDate, isPartialMonth, latestHistoryYear, useDailyHistory, type DailyHistoryDay, type DailySource } from "@/lib/daily";
 import { fmt, SOURCE_COLORS, SOURCE_LABELS } from "@/lib/energy";
 
 const DAILY_SOURCES = ["coal", "gas", "other_fossil", "hydro", "wind", "solar", "other_renewables", "other"] as const;
@@ -19,11 +19,12 @@ const parseDate = (iso: string) => new Date(+iso.slice(0, 4), +iso.slice(5, 7) -
 
 export function HomeDailySections() {
   const q = useDailyHistory();
-  const days = useMemo(() => (q.data ?? []).filter((d) => d.hoursAvailable === 24), [q.data]);
+  const days = useMemo(() => latestHistoryYear(q.data ?? []), [q.data]);
+  const firstDay = days[0];
 
   if (q.status === "error") return null;
 
-  if (q.status === "pending" || !days.length) {
+  if (q.status === "pending" || !firstDay) {
     return (
       <section className="border-t border-border py-12" aria-hidden>
         <div className="space-y-4">
@@ -35,7 +36,7 @@ export function HomeDailySections() {
     );
   }
 
-  const year = parseDate(days[0]!.date).getFullYear();
+  const year = parseDate(firstDay.date).getFullYear();
 
   return (
     <>
@@ -104,7 +105,7 @@ function CalendarHeatmap({ days, year }: { days: DailyHistoryDay[]; year: number
   const h = top + 7 * PITCH;
 
   return (
-    <Section kicker={`${year}, day by day`} title="Renewable share of electricity, every day">
+    <Section kicker={`${year}, day by day`} title={`Renewable share of electricity, every day in ${year}`}>
       <div className="mt-6 overflow-x-auto rounded-sm border border-border bg-card p-4">
         <svg width={w} height={h} className="block" style={{ minWidth: w }} role="img"
           aria-label={`Calendar heatmap of daily renewable share in ${year}`}>
@@ -159,7 +160,7 @@ function CalendarHeatmap({ days, year }: { days: DailyHistoryDay[]; year: number
 function MonthByMonth({ days, year }: { days: DailyHistoryDay[]; year: number }) {
   const [mode, setMode] = useState<"gwh" | "share">("gwh");
 
-  const { data, partialLabel, lastDate } = useMemo(() => {
+  const { data, partialLabels, lastDate } = useMemo(() => {
     const byMonth = new Map<number, DailyHistoryDay[]>();
     for (const d of days) {
       const m = +d.date.slice(5, 7) - 1;
@@ -167,22 +168,26 @@ function MonthByMonth({ days, year }: { days: DailyHistoryDay[]; year: number })
       if (list) list.push(d);
       else byMonth.set(m, [d]);
     }
-    const lastMonth = +days[days.length - 1]!.date.slice(5, 7) - 1;
+    const partialLabels: string[] = [];
     const data = [...byMonth.entries()]
       .sort((a, b) => a[0] - b[0])
       .map(([m, list]) => {
-        const row: Record<string, number | string> = { month: MONTHS[m]! + (m === lastMonth ? "*" : "") };
+        const label = MONTHS[m] ?? "";
+        const partial = isPartialMonth(year, m, list);
+        if (partial) partialLabels.push(label);
+        const row: Record<string, number | string> = { month: label + (partial ? "*" : "") };
         let sum = 0;
         const totals: Partial<Record<DailySource, number>> = {};
         for (const s of DAILY_SOURCES) {
-          totals[s] = list.reduce((a, d) => a + (d.totalsGWh[s] || 0), 0);
-          sum += totals[s]!;
+          const sourceTotal = list.reduce((a, d) => a + (d.totalsGWh[s] || 0), 0);
+          totals[s] = sourceTotal;
+          sum += sourceTotal;
         }
-        for (const s of DAILY_SOURCES) row[s] = mode === "gwh" ? totals[s]! : sum ? (totals[s]! / sum) * 100 : 0;
+        for (const s of DAILY_SOURCES) row[s] = mode === "gwh" ? (totals[s] ?? 0) : sum ? ((totals[s] ?? 0) / sum) * 100 : 0;
         return row;
       });
-    return { data, partialLabel: MONTHS[lastMonth]!, lastDate: days[days.length - 1]!.date };
-  }, [days, mode]);
+    return { data, partialLabels, lastDate: days.at(-1)?.date ?? "" };
+  }, [days, mode, year]);
 
   return (
     <Section kicker="Month by month" title={`Monthly generation in ${year}`}>
@@ -230,9 +235,11 @@ function MonthByMonth({ days, year }: { days: DailyHistoryDay[]; year: number })
             </BarChart>
           </ResponsiveContainer>
         </div>
-        <p className="mt-3 text-xs text-muted-foreground">
-          *{partialLabel} is partial — data through {fmtDate(lastDate)}.
-        </p>
+        {partialLabels.length > 0 && (
+          <p className="mt-3 text-xs text-muted-foreground">
+            *{partialLabels.join(", ")} {partialLabels.length === 1 ? "is" : "are"} partial — data through {fmtDate(lastDate)}.
+          </p>
+        )}
       </div>
     </Section>
   );
