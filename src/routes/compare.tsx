@@ -100,7 +100,7 @@ function ComparePage() {
               </defs>
               <CartesianGrid horizontal={false} stroke="var(--border)" />
               <XAxis type="number" tick={{ fontSize: 12 }} stroke="var(--muted-foreground)" unit={rankMetric === "renewableShare" ? "%" : ""} />
-              <YAxis type="category" dataKey="name" width={110} tick={{ fontSize: 12 }} stroke="var(--muted-foreground)" interval={0} />
+              <YAxis type="category" dataKey="name" width={140} tick={{ fontSize: 12 }} stroke="var(--muted-foreground)" interval={0} />
               <Tooltip cursor={{ fill: "var(--muted)" }} content={<ChartTooltip unit={unitOf(rankMetric)} />} />
               <Bar dataKey="value" name={METRIC_LABELS[rankMetric]} radius={[0, 2, 2, 0]} label={{ position: "right", fontSize: 11, fill: "var(--muted-foreground)", formatter: (v: unknown) => (rankMetric === "renewableShare" ? `${Number(v).toFixed(1)}%` : String(v)) }}>
                 {rows.map((r) => (
