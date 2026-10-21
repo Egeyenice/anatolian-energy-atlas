@@ -22,6 +22,9 @@ const PAGES = [
   { to: "/trends", title: "Trends", text: "Coal overtook gas in 2016." },
   { to: "/hydro-drought", title: "Hydro & Drought", text: "When the rivers run low, gas fills the gap." },
   { to: "/map", title: "Map", text: "See where Türkiye's biggest power plants are." },
+  { to: "/compare", title: "Compare", text: "More renewables than the US, yet more carbon per kWh" },
+  { to: "/simulator", title: "Simulator", text: "What if Türkiye hits its 2035 targets? Try it yourself" },
+  { to: "/about", title: "About", text: "How this site was built, and how the data was checked" },
 ] as const;
 
 function Index() {
@@ -70,7 +73,7 @@ function Index() {
 
       <section className="mt-16">
         <h2 className="mb-6 font-serif text-2xl font-semibold text-foreground">Explore the atlas</h2>
-        <div className="grid gap-4 md:grid-cols-3">
+        <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3">
           {PAGES.map((p) => (
             <Link key={p.to} to={p.to} className="group rounded-sm border border-border bg-card p-6 transition-colors hover:border-primary">
               <h3 className="font-serif text-xl font-semibold text-primary group-hover:underline">{p.title} →</h3>
