@@ -1,3 +1,4 @@
 - [x] Add the exact uploaded capacity data and Trends comparison charts, stats, explainer, source and analysis placeholder.
 - [x] Verify the comparison charts and mobile layout.
 - [x] Make Home history charts use the latest available year and mark only incomplete calendar months partial; verify regression tests and the Home page.
+- [ ] Add and verify Home daily freshness/source captions and the annual-data note while preserving calendar rules.

@@ -2,7 +2,8 @@ import { useMemo, useState, type ReactNode } from "react";
 import { Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import { ChartTooltip } from "@/components/ChartTooltip";
 import { Analysis } from "@/components/site";
-import { fmtDate, isPartialMonth, latestHistoryYear, useDailyHistory, type DailyHistoryDay, type DailySource } from "@/lib/daily";
+import { DailyDataNote } from "@/components/DailyDataNote";
+import { fmtDate, isPartialMonth, latestHistoryDate, latestHistoryYear, useDailyHistory, type DailyHistoryDay, type DailySource } from "@/lib/daily";
 import { fmt, SOURCE_COLORS, SOURCE_LABELS } from "@/lib/energy";
 
 const DAILY_SOURCES = ["coal", "gas", "other_fossil", "hydro", "wind", "solar", "other_renewables", "other"] as const;
@@ -12,8 +13,6 @@ const DAILY_COLORS: Record<DailySource, string> = { ...SOURCE_COLORS, other: "va
 
 const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 const WEEKDAYS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
-
-const SOURCE_NOTE = "Source: EPİAŞ real-time generation, licensed plants only.";
 
 const parseDate = (iso: string) => new Date(+iso.slice(0, 4), +iso.slice(5, 7) - 1, +iso.slice(8, 10));
 
@@ -37,23 +36,24 @@ export function HomeDailySections() {
   }
 
   const year = parseDate(firstDay.date).getFullYear();
+  const dataThrough = latestHistoryDate(q.data ?? []);
 
   return (
     <>
-      <CalendarHeatmap days={days} year={year} />
-      <MonthByMonth days={days} year={year} />
-      <WeekdayChart days={days} year={year} />
+      <CalendarHeatmap days={days} year={year} dataThrough={dataThrough} />
+      <MonthByMonth days={days} year={year} dataThrough={dataThrough} />
+      <WeekdayChart days={days} year={year} dataThrough={dataThrough} />
     </>
   );
 }
 
-function Section({ kicker, title, children }: { kicker: string; title: string; children: ReactNode }) {
+function Section({ kicker, title, children, dataThrough }: { kicker: string; title: string; children: ReactNode; dataThrough?: string }) {
   return (
     <section className="border-t border-border py-12">
       <p className="mb-2 text-xs font-semibold uppercase tracking-widest text-accent-foreground">{kicker}</p>
       <h2 className="font-serif text-2xl font-semibold text-foreground md:text-3xl">{title}</h2>
       {children}
-      <p className="mt-3 text-xs text-muted-foreground">{SOURCE_NOTE}</p>
+      <DailyDataNote date={dataThrough} />
       <Analysis text="[MY NOTE – to be written]" />
     </section>
   );
@@ -71,7 +71,9 @@ const GREENS = [
   "oklch(0.5 0.13 150)",
 ];
 
-function CalendarHeatmap({ days, year }: { days: DailyHistoryDay[]; year: number }) {
+type HistoryChartProps = { days: DailyHistoryDay[]; year: number; dataThrough?: string };
+
+function CalendarHeatmap({ days, year, dataThrough }: HistoryChartProps) {
   const [hover, setHover] = useState<DailyHistoryDay | null>(null);
 
   const { cells, months, cols, min, max } = useMemo(() => {
@@ -105,7 +107,7 @@ function CalendarHeatmap({ days, year }: { days: DailyHistoryDay[]; year: number
   const h = top + 7 * PITCH;
 
   return (
-    <Section kicker={`${year}, day by day`} title={`Renewable share of electricity, every day in ${year}`}>
+    <Section kicker={`${year}, day by day`} title={`Renewable share of electricity, every day in ${year}`} dataThrough={dataThrough}>
       <div className="mt-6 overflow-x-auto rounded-sm border border-border bg-card p-4">
         <svg width={w} height={h} className="block" style={{ minWidth: w }} role="img"
           aria-label={`Calendar heatmap of daily renewable share in ${year}`}>
@@ -157,7 +159,7 @@ function CalendarHeatmap({ days, year }: { days: DailyHistoryDay[]; year: number
 
 /* ---------- 2. Month by month ---------- */
 
-function MonthByMonth({ days, year }: { days: DailyHistoryDay[]; year: number }) {
+function MonthByMonth({ days, year, dataThrough }: HistoryChartProps) {
   const [mode, setMode] = useState<"gwh" | "share">("gwh");
 
   const { data, partialLabels, lastDate } = useMemo(() => {
@@ -190,7 +192,7 @@ function MonthByMonth({ days, year }: { days: DailyHistoryDay[]; year: number })
   }, [days, mode, year]);
 
   return (
-    <Section kicker="Month by month" title={`Monthly generation in ${year}`}>
+    <Section kicker="Month by month" title={`Monthly generation in ${year}`} dataThrough={dataThrough}>
       <div className="mt-6 rounded-sm border border-border bg-card p-4 md:p-6">
         <div className="mb-4 flex gap-1">
           {(
@@ -247,7 +249,7 @@ function MonthByMonth({ days, year }: { days: DailyHistoryDay[]; year: number })
 
 /* ---------- 3. Weekdays vs. weekends ---------- */
 
-function WeekdayChart({ days, year }: { days: DailyHistoryDay[]; year: number }) {
+function WeekdayChart({ days, year, dataThrough }: HistoryChartProps) {
   const data = useMemo(() => {
     const sums = Array.from({ length: 7 }, () => ({ sum: 0, n: 0 }));
     for (const d of days) {
@@ -259,7 +261,7 @@ function WeekdayChart({ days, year }: { days: DailyHistoryDay[]; year: number })
   }, [days]);
 
   return (
-    <Section kicker="Weekdays vs. weekends" title={`Average daily generation by day of the week, ${year}`}>
+    <Section kicker="Weekdays vs. weekends" title={`Average daily generation by day of the week, ${year}`} dataThrough={dataThrough}>
       <div className="mt-6 rounded-sm border border-border bg-card p-4 md:p-6">
         <div className="h-72 w-full">
           <ResponsiveContainer width="100%" height="100%">

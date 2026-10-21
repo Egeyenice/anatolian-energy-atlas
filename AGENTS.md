@@ -14,3 +14,4 @@
 
 - The Map page (src/routes/map.tsx) renders Leaflet only client-side: src/components/PlantsMap.tsx is React.lazy behind <ClientOnly>, and shared plant data/types live in src/lib/plants.ts so the SSR graph never imports leaflet.
 - Home's daily-data sections (YesterdaySection, HomeDailySections) fetch latest.json/records.json/history.json from the raw GitHub URL in src/lib/daily.ts at runtime; they hide gracefully on fetch error and compute all aggregates in the app. Shared daily helpers select the latest year with 24-hour records and determine monthly completeness from distinct dates versus calendar month length, keeping all three history charts consistent without relying on the current date.
+- Home daily freshness captions share DailyDataNote and pure daily date helpers; the clock starts after hydration and refreshes each minute so stale indicators stay current without SSR mismatches.
