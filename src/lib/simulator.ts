@@ -68,7 +68,7 @@ export function simulate(d: SimulatorData, inp: SimInputs): SimResult {
   const mix = { coal, gas, other_fossil: oil, hydro, wind, solar, other_renewables: otherRen, nuclear };
   const totalGen = Object.values(mix).reduce((s, v) => s + v, 0);
   const f = d.emissionFactors_gPerKWh;
-  const emissions = coal * f.coal + gas * f.gas + oil * f.other_fossil + hydro * f.hydro + wind * f.wind + solar * f.solar + otherRen * f.other_renewables + nuclear * f.nuclear;
+  const emissions = coal * f.coal + gas * f.gas + oil * f.other_fossil + hydro * f.hydro + wind * f.wind + solar * f.solar + otherRen * f.other_renewables + nuclear * f["nuclear"];
   const baseEmissions = d.baseCarbonIntensity * d.baseDemandTWh;
 
   const gasChangeTWh = gas - d.base.gas;

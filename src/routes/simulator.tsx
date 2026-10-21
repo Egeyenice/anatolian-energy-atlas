@@ -25,7 +25,7 @@ const MIX_LABELS: Record<(typeof MIX_KEYS)[number], string> = { ...SOURCE_LABELS
 const MIX_COLORS: Record<(typeof MIX_KEYS)[number], string> = { ...SOURCE_COLORS, nuclear: "var(--src-nuclear)" };
 
 function defaults(d: SimulatorData): SimInputs {
-  return { solarGW: d.solar.defaultGW, windGW: d.wind.defaultGW, hydroTWh: d.hydroYears["2025 actual"], nuclearUnits: 0, growthPct: d.demandGrowth.defaultPct };
+  return { solarGW: d.solar.defaultGW, windGW: d.wind.defaultGW, hydroTWh: d.hydroYears["2025 actual"]!, nuclearUnits: 0, growthPct: d.demandGrowth.defaultPct };
 }
 
 function Slider({ label, value, min, max, step, unit, onChange }: { label: string; value: number; min: number; max: number; step: number; unit: string; onChange: (v: number) => void }) {
