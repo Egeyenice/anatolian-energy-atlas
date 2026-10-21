@@ -120,6 +120,7 @@ function FourNumbers({ years }: { years: YearRow[] }) {
           <Stat key={c.label} label={c.label} value={c.value} note={c.note} />
         ))}
       </div>
+      <p className="mt-3 text-xs text-muted-foreground">Annual data · Source: Ember via Our World in Data · Updated once a year</p>
     </section>
   );
 }

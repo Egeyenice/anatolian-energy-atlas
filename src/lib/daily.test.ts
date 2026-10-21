@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { isPartialMonth, latestHistoryYear, type DailyHistoryDay } from "./daily";
+import { isDailyDataStale, isPartialMonth, latestHistoryDate, latestHistoryYear, type DailyHistoryDay } from "./daily";
 
 function day(date: string, hoursAvailable = 24): DailyHistoryDay {
   return { date, hoursAvailable, totalGWh: 100, renewableShare: 50,
@@ -11,6 +11,19 @@ const monthDays = (year: number, month: number, count: number) =>
 afterEach(() => vi.useRealTimers());
 
 describe("Home daily history", () => {
+  it("treats the data date as stale only when it is more than two calendar days old", () => {
+    const now = new Date("2026-10-21T23:59:59Z");
+    expect(isDailyDataStale("2026-10-21", now)).toBe(false);
+    expect(isDailyDataStale("2026-10-19", now)).toBe(false);
+    expect(isDailyDataStale("2026-10-18", now)).toBe(true);
+    expect(isDailyDataStale("2026-12-31", new Date("2027-01-03T00:00:00Z"))).toBe(true);
+  });
+
+  it("takes the latest note date from history regardless of array order or chart-year filtering", () => {
+    expect(latestHistoryDate([day("2026-10-21"), day("2025-12-31"), day("2026-10-20")])).toBe("2026-10-21");
+    expect(latestHistoryDate([day("2026-12-31"), day("2027-01-01", 12)])).toBe("2027-01-01");
+    expect(latestHistoryDate([])).toBeUndefined();
+  });
   it("marks months partial only when complete daily data covers fewer than the calendar month's days", () => {
     expect(isPartialMonth(2026, 0, monthDays(2026, 1, 31))).toBe(false);
     expect(isPartialMonth(2026, 0, monthDays(2026, 1, 30))).toBe(true);

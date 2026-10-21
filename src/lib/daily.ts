@@ -57,6 +57,18 @@ export type DailyHistoryDay = {
   totalsGWh: Record<DailySource, number>;
 };
 
+export function latestHistoryDate(days: DailyHistoryDay[]): string | undefined {
+  return days.reduce<string | undefined>((latest, day) =>
+    !latest || day.date > latest ? day.date : latest, undefined);
+}
+
+/** Compare date-only calendar days so a two-day-old date stays fresh throughout the day. */
+export function isDailyDataStale(date: string, now: Date): boolean {
+  const dataDay = Date.parse(`${date}T00:00:00Z`);
+  const today = Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate());
+  return today - dataDay > 2 * 86400000;
+}
+
 /** Select the latest year represented by usable daily data, independent of today's date. */
 export function latestHistoryYear(days: DailyHistoryDay[]): DailyHistoryDay[] {
   const complete = days.filter((day) => day.hoursAvailable === 24);

@@ -1,6 +1,7 @@
 import { Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import { ChartTooltip } from "@/components/ChartTooltip";
-import { fmtDate, useDailyLatest, useDailyRecords, type DailySource } from "@/lib/daily";
+import { DailyDataNote } from "@/components/DailyDataNote";
+import { fmtDate, latestHistoryDate, useDailyHistory, useDailyLatest, useDailyRecords, type DailySource } from "@/lib/daily";
 import { fmt, SOURCE_COLORS, SOURCE_LABELS } from "@/lib/energy";
 
 const DAILY_SOURCES = ["coal", "gas", "other_fossil", "hydro", "wind", "solar", "other_renewables", "other"] as const;
@@ -11,6 +12,7 @@ const DAILY_COLORS: Record<DailySource, string> = { ...SOURCE_COLORS, other: "va
 export function YesterdaySection() {
   const latest = useDailyLatest();
   const records = useDailyRecords();
+  const history = useDailyHistory();
 
   // Hide the whole section gracefully if the live data cannot be loaded.
   if (latest.status === "error" && records.status === "error") return null;
@@ -74,9 +76,8 @@ export function YesterdaySection() {
                   </AreaChart>
                 </ResponsiveContainer>
               </div>
-              <figcaption className="mt-3 text-xs text-muted-foreground">
-                Source: EPİAŞ Transparency Platform, real-time generation. Licensed power plants only; most rooftop
-                and other unlicensed solar is not included, so solar is undercounted.
+              <figcaption>
+                <DailyDataNote date={d.date} caveat="Most rooftop and other unlicensed solar is not included, so solar is undercounted." />
               </figcaption>
             </figure>
           )}
@@ -111,6 +112,7 @@ export function YesterdaySection() {
               />
             )}
           </div>
+          {(d || r) && <DailyDataNote date={latestHistoryDate(history.data ?? [])} />}
         </>
       )}
     </section>
