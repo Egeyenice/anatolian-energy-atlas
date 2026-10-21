@@ -91,6 +91,7 @@
   --src-solar: oklch(0.86 0.17 92);
   --src-other-renewables: oklch(0.6 0.15 145);
   --src-other-fossil: oklch(0.48 0.08 50);
+  --src-nuclear: oklch(0.5 0.2 300);
   --drought: oklch(0.8 0.07 240);
   --drought-label: oklch(0.5 0.17 30);
   --chart-1: oklch(0.646 0.222 41.116);
