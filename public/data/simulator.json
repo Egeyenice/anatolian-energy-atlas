@@ -1,0 +1,107 @@
+{
+  "baseYear": 2025,
+  "baseDemandTWh": 353.9,
+  "base": {
+    "coal": 121.4,
+    "gas": 78.4,
+    "hydro": 57.3,
+    "wind": 39.4,
+    "solar": 37.3,
+    "other_renewables": 19.1,
+    "other_fossil": 1.0
+  },
+  "solar": {
+    "defaultGW": 22.9,
+    "min": 15,
+    "max": 90,
+    "capacityFactor": 0.1863
+  },
+  "wind": {
+    "defaultGW": 13.8,
+    "min": 10,
+    "max": 60,
+    "capacityFactor": 0.3253
+  },
+  "hydroYears": {
+    "Dry (like 2021)": 55.5,
+    "2025 actual": 57.3,
+    "Average (2016–2025)": 66.9,
+    "Wet (like 2019)": 88.6
+  },
+  "nuclear": {
+    "unitGW": 1.2,
+    "capacityFactor": 0.9,
+    "maxUnits": 4
+  },
+  "demandGrowth": {
+    "defaultPct": 0,
+    "min": 0,
+    "max": 40
+  },
+  "fixed": {
+    "other_renewables": 19.1,
+    "other_fossil": 1.0,
+    "coalMax": 121.4,
+    "gasMin": 30
+  },
+  "emissionFactors_gPerKWh": {
+    "gas": 490,
+    "hydro": 24,
+    "wind": 11,
+    "solar": 48,
+    "nuclear": 12,
+    "other_renewables": 150,
+    "other_fossil": 650,
+    "coal": 1009
+  },
+  "gas": {
+    "plantEfficiency": 0.5,
+    "TWhThermalPerBcm": 10.55
+  },
+  "baseCarbonIntensity": 474.75,
+  "presets": {
+    "2025 (base year)": {
+      "solarGW": 22.9,
+      "windGW": 13.8,
+      "hydroTWh": 57.3,
+      "nuclearUnits": 0,
+      "demandGrowthPct": 0
+    },
+    "Wet year": {
+      "solarGW": 22.9,
+      "windGW": 13.8,
+      "hydroTWh": 88.6,
+      "nuclearUnits": 0,
+      "demandGrowthPct": 0
+    },
+    "Akkuyu at full power": {
+      "solarGW": 22.9,
+      "windGW": 13.8,
+      "hydroTWh": 57.3,
+      "nuclearUnits": 4,
+      "demandGrowthPct": 0
+    },
+    "2035 targets": {
+      "solarGW": 75,
+      "windGW": 45,
+      "hydroTWh": 66.9,
+      "nuclearUnits": 4,
+      "demandGrowthPct": 34
+    },
+    "2035 targets, but no new solar or wind": {
+      "solarGW": 22.9,
+      "windGW": 13.8,
+      "hydroTWh": 66.9,
+      "nuclearUnits": 4,
+      "demandGrowthPct": 34
+    }
+  },
+  "notes": [
+    "Simplified model for exploration, not a forecast.",
+    "Solar and wind capacity = average installed capacity during the year; capacity factors are Türkiye's actual 2025 values.",
+    "Fossil fuels fill whatever demand clean sources cannot meet. Gas adjusts first and coal stays at its 2025 level, because coal plants already run close to full capacity (see Hydro & Drought). At least 30 TWh of gas is always kept for flexibility.",
+    "The 2035 preset uses the official target of 120 GW of solar and wind; the 75/45 GW split is an assumption based on projects already allocated in 2024. Demand +34% assumes ~3% growth per year, the 2015–2025 average.",
+    "Emission factors are lifecycle medians (IPCC); the coal factor is calibrated so that 2025 matches Ember's 474.75 gCO2e/kWh.",
+    "Gas volume assumes 50% average power plant efficiency and 10.55 kWh per cubic metre of gas."
+  ]
+}

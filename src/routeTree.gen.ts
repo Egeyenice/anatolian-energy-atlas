@@ -14,6 +14,7 @@ import { Route as AboutRouteImport } from './routes/about'
 import { Route as CompareRouteImport } from './routes/compare'
 import { Route as HydroDroughtRouteImport } from './routes/hydro-drought'
 import { Route as MapRouteImport } from './routes/map'
+import { Route as SimulatorRouteImport } from './routes/simulator'
 import { Route as TrendsRouteImport } from './routes/trends'
 
 const IndexRoute = IndexRouteImport.update({
@@ -41,6 +42,11 @@ const MapRoute = MapRouteImport.update({
   path: '/map',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SimulatorRoute = SimulatorRouteImport.update({
+  id: '/simulator',
+  path: '/simulator',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const TrendsRoute = TrendsRouteImport.update({
   id: '/trends',
   path: '/trends',
@@ -53,6 +59,7 @@ export interface FileRoutesByFullPath {
   '/compare': typeof CompareRoute
   '/hydro-drought': typeof HydroDroughtRoute
   '/map': typeof MapRoute
+  '/simulator': typeof SimulatorRoute
   '/trends': typeof TrendsRoute
 }
 export interface FileRoutesByTo {
@@ -61,6 +68,7 @@ export interface FileRoutesByTo {
   '/compare': typeof CompareRoute
   '/hydro-drought': typeof HydroDroughtRoute
   '/map': typeof MapRoute
+  '/simulator': typeof SimulatorRoute
   '/trends': typeof TrendsRoute
 }
 export interface FileRoutesById {
@@ -70,13 +78,28 @@ export interface FileRoutesById {
   '/compare': typeof CompareRoute
   '/hydro-drought': typeof HydroDroughtRoute
   '/map': typeof MapRoute
+  '/simulator': typeof SimulatorRoute
   '/trends': typeof TrendsRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/about' | '/compare' | '/hydro-drought' | '/map' | '/trends'
+  fullPaths:
+    | '/'
+    | '/about'
+    | '/compare'
+    | '/hydro-drought'
+    | '/map'
+    | '/simulator'
+    | '/trends'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about' | '/compare' | '/hydro-drought' | '/map' | '/trends'
+  to:
+    | '/'
+    | '/about'
+    | '/compare'
+    | '/hydro-drought'
+    | '/map'
+    | '/simulator'
+    | '/trends'
   id:
     | '__root__'
     | '/'
@@ -84,6 +107,7 @@ export interface FileRouteTypes {
     | '/compare'
     | '/hydro-drought'
     | '/map'
+    | '/simulator'
     | '/trends'
   fileRoutesById: FileRoutesById
 }
@@ -93,6 +117,7 @@ export interface RootRouteChildren {
   CompareRoute: typeof CompareRoute
   HydroDroughtRoute: typeof HydroDroughtRoute
   MapRoute: typeof MapRoute
+  SimulatorRoute: typeof SimulatorRoute
   TrendsRoute: typeof TrendsRoute
 }
 
@@ -133,6 +158,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MapRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/simulator': {
+      id: '/simulator'
+      path: '/simulator'
+      fullPath: '/simulator'
+      preLoaderRoute: typeof SimulatorRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/trends': {
       id: '/trends'
       path: '/trends'
@@ -149,6 +181,7 @@ const rootRouteChildren: RootRouteChildren = {
   CompareRoute: CompareRoute,
   HydroDroughtRoute: HydroDroughtRoute,
   MapRoute: MapRoute,
+  SimulatorRoute: SimulatorRoute,
   TrendsRoute: TrendsRoute,
 }
 export const routeTree = rootRouteImport
