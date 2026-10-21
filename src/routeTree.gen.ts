@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as HydroDroughtRouteImport } from './routes/hydro-drought'
+import { Route as MapRouteImport } from './routes/map'
 import { Route as TrendsRouteImport } from './routes/trends'
 
 const IndexRoute = IndexRouteImport.update({
@@ -29,6 +30,11 @@ const HydroDroughtRoute = HydroDroughtRouteImport.update({
   path: '/hydro-drought',
   getParentRoute: () => rootRouteImport,
 } as any)
+const MapRoute = MapRouteImport.update({
+  id: '/map',
+  path: '/map',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const TrendsRoute = TrendsRouteImport.update({
   id: '/trends',
   path: '/trends',
@@ -39,12 +45,14 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/hydro-drought': typeof HydroDroughtRoute
+  '/map': typeof MapRoute
   '/trends': typeof TrendsRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/hydro-drought': typeof HydroDroughtRoute
+  '/map': typeof MapRoute
   '/trends': typeof TrendsRoute
 }
 export interface FileRoutesById {
@@ -52,20 +60,22 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/hydro-drought': typeof HydroDroughtRoute
+  '/map': typeof MapRoute
   '/trends': typeof TrendsRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/about' | '/hydro-drought' | '/trends'
+  fullPaths: '/' | '/about' | '/hydro-drought' | '/map' | '/trends'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about' | '/hydro-drought' | '/trends'
-  id: '__root__' | '/' | '/about' | '/hydro-drought' | '/trends'
+  to: '/' | '/about' | '/hydro-drought' | '/map' | '/trends'
+  id: '__root__' | '/' | '/about' | '/hydro-drought' | '/map' | '/trends'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
   HydroDroughtRoute: typeof HydroDroughtRoute
+  MapRoute: typeof MapRoute
   TrendsRoute: typeof TrendsRoute
 }
 
@@ -92,6 +102,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof HydroDroughtRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/map': {
+      id: '/map'
+      path: '/map'
+      fullPath: '/map'
+      preLoaderRoute: typeof MapRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/trends': {
       id: '/trends'
       path: '/trends'
@@ -106,6 +123,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
   HydroDroughtRoute: HydroDroughtRoute,
+  MapRoute: MapRoute,
   TrendsRoute: TrendsRoute,
 }
 export const routeTree = rootRouteImport
