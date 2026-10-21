@@ -220,7 +220,7 @@ function MonthByMonth({ days, year }: { days: DailyHistoryDay[]; year: number })
                 width={48}
                 {...(mode === "share" ? { domain: [0, 100] } : {})}
                 tickFormatter={(v: number) =>
-                  mode === "share" ? `${v}%` : v >= 1000 ? `${Math.round(v / 1000)}k` : String(v)
+                  mode === "share" ? `${Math.round(v)}%` : v >= 1000 ? `${Math.round(v / 1000)}k` : String(v)
                 }
               />
               <Tooltip content={<ChartTooltip unit={mode === "gwh" ? " GWh" : " %"} />} />
