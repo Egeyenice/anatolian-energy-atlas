@@ -1,7 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { computeStats, fmt, SOURCE_COLORS, SOURCE_LABELS, useEnergyData } from "@/lib/energy";
+import { computeStats, fmt, renewableShare, SOURCE_COLORS, SOURCE_LABELS, total, useEnergyData, type YearRow } from "@/lib/energy";
 import { DataState } from "@/components/site";
 import { YesterdaySection } from "@/components/YesterdaySection";
+import { HomeDailySections } from "@/components/HomeDailySections";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -18,9 +19,9 @@ export const Route = createFileRoute("/")({
 });
 
 const PAGES = [
-  { to: "/trends", title: "Trends", text: "How each source of electricity has grown or shrunk since 2000." },
-  { to: "/hydro-drought", title: "Hydro & Drought", text: "What happens to the power mix when rivers run low." },
-  { to: "/about", title: "About & Methodology", text: "Where the data comes from and how this site was built." },
+  { to: "/trends", title: "Trends", text: "Coal overtook gas in 2016." },
+  { to: "/hydro-drought", title: "Hydro & Drought", text: "When the rivers run low, gas fills the gap." },
+  { to: "/map", title: "Map", text: "See where Türkiye's biggest power plants are." },
 ] as const;
 
 function Index() {
@@ -40,6 +41,8 @@ function Index() {
       </section>
 
       <YesterdaySection />
+
+      <HomeDailySections />
 
       {s ? (
         <section className="grid gap-4 md:grid-cols-3">
@@ -63,6 +66,8 @@ function Index() {
         <DataState status={status === "error" ? "error" : "pending"} />
       )}
 
+      {data && data.years.length > 1 && <FourNumbers years={data.years} />}
+
       <section className="mt-16">
         <h2 className="mb-6 font-serif text-2xl font-semibold text-foreground">Explore the atlas</h2>
         <div className="grid gap-4 md:grid-cols-3">
@@ -75,6 +80,47 @@ function Index() {
         </div>
       </section>
     </div>
+  );
+}
+
+function FourNumbers({ years }: { years: YearRow[] }) {
+  const sorted = [...years].sort((a, b) => a.year - b.year);
+  const base = sorted.find((y) => y.year === 2000) ?? sorted[0]!;
+  const last = sorted[sorted.length - 1]!;
+  const cards = [
+    {
+      label: "Total generation",
+      value: `${fmt(total(last), 0)} TWh`,
+      note: `×${fmt(total(last) / total(base), 1)} since ${base.year} (${fmt(total(base), 0)} TWh)`,
+    },
+    {
+      label: "Renewable share",
+      value: `${fmt(renewableShare(last))}%`,
+      note: `vs ${fmt(renewableShare(base))}% in ${base.year}`,
+    },
+    {
+      label: "Solar generation",
+      value: `${fmt(last.solar)} TWh`,
+      note: `vs ${fmt(base.solar)} TWh in ${base.year}`,
+    },
+    {
+      label: "Coal generation",
+      value: `${fmt(last.coal, 0)} TWh`,
+      note: `×${fmt(last.coal / base.coal, 1)} since ${base.year} (${fmt(base.coal, 0)} TWh)`,
+    },
+  ];
+  return (
+    <section className="mt-16">
+      <h2 className="mb-2 font-serif text-2xl font-semibold text-foreground">25 years in four numbers</h2>
+      <p className="mb-6 text-sm text-muted-foreground">
+        Comparing {base.year} with {last.year}
+      </p>
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        {cards.map((c) => (
+          <Stat key={c.label} label={c.label} value={c.value} note={c.note} />
+        ))}
+      </div>
+    </section>
   );
 }
 
