@@ -11,3 +11,5 @@
 
 - Electricity-generation charts read /public/data/energy.json via useEnergyData; shares are computed, never stored, so the data file can change without code edits.
 - The Trends capacity comparison uses a separate component and /public/data/capacity.json for installed capacity and nullable capacity factors; generation remains sourced from useEnergyData to keep electricity output consistent across charts.
+
+- The Map page (src/routes/map.tsx) renders Leaflet only client-side: src/components/PlantsMap.tsx is React.lazy behind <ClientOnly>, and shared plant data/types live in src/lib/plants.ts so the SSR graph never imports leaflet.
