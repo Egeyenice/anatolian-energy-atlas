@@ -47,7 +47,7 @@ export function HomeDailySections() {
   );
 }
 
-function Section({ kicker, title, children, dataThrough }: { kicker: string; title: string; children: ReactNode; dataThrough?: string }) {
+function Section({ kicker, title, children, dataThrough }: { kicker: string; title: string; children: ReactNode; dataThrough?: string | undefined }) {
   return (
     <section className="border-t border-border py-12">
       <p className="mb-2 text-xs font-semibold uppercase tracking-widest text-accent-foreground">{kicker}</p>
@@ -71,7 +71,7 @@ const GREENS = [
   "oklch(0.5 0.13 150)",
 ];
 
-type HistoryChartProps = { days: DailyHistoryDay[]; year: number; dataThrough?: string };
+type HistoryChartProps = { days: DailyHistoryDay[]; year: number; dataThrough?: string | undefined };
 
 function CalendarHeatmap({ days, year, dataThrough }: HistoryChartProps) {
   const [hover, setHover] = useState<DailyHistoryDay | null>(null);

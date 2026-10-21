@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { fmtDate, isDailyDataStale } from "@/lib/daily";
 
-export function DailyDataNote({ date, caveat }: { date?: string; caveat?: string }) {
+export function DailyDataNote({ date, caveat }: { date?: string | undefined; caveat?: string }) {
   const [now, setNow] = useState<Date | null>(null);
   useEffect(() => {
     setNow(new Date());
