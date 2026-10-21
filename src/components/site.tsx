@@ -7,6 +7,7 @@ const NAV = [
   { to: "/hydro-drought", label: "Hydro & Drought", short: "Hydro" },
   { to: "/map", label: "Map" },
   { to: "/compare", label: "Compare" },
+  { to: "/simulator", label: "Simulator", short: "Sim" },
   { to: "/about", label: "About & Methodology", short: "About" },
 ] as const;
 
