@@ -10,7 +10,7 @@ export type SimulatorData = {
   nuclear: { unitGW: number; capacityFactor: number; maxUnits: number };
   demandGrowth: { defaultPct: number; min: number; max: number };
   fixed: { other_renewables: number; other_fossil: number; coalMax: number; gasMin: number };
-  emissionFactors_gPerKWh: Record<string, number>;
+  emissionFactors_gPerKWh: { coal: number; gas: number; hydro: number; wind: number; solar: number; nuclear: number; other_renewables: number; other_fossil: number };
   gas: { plantEfficiency: number; TWhThermalPerBcm: number };
   baseCarbonIntensity: number;
   presets: Record<string, { solarGW: number; windGW: number; hydroTWh: number; nuclearUnits: number; demandGrowthPct: number }>;
@@ -68,7 +68,7 @@ export function simulate(d: SimulatorData, inp: SimInputs): SimResult {
   const mix = { coal, gas, other_fossil: oil, hydro, wind, solar, other_renewables: otherRen, nuclear };
   const totalGen = Object.values(mix).reduce((s, v) => s + v, 0);
   const f = d.emissionFactors_gPerKWh;
-  const emissions = coal * f.coal + gas * f.gas + oil * f.other_fossil + hydro * f.hydro + wind * f.wind + solar * f.solar + otherRen * f.other_renewables + nuclear * f["nuclear"];
+  const emissions = coal * f.coal + gas * f.gas + oil * f.other_fossil + hydro * f.hydro + wind * f.wind + solar * f.solar + otherRen * f.other_renewables + nuclear * f.nuclear;
   const baseEmissions = d.baseCarbonIntensity * d.baseDemandTWh;
 
   const gasChangeTWh = gas - d.base.gas;
