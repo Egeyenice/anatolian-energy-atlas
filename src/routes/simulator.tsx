@@ -67,7 +67,7 @@ function SimulatorPage() {
   const hydroKeys = Object.keys(data.hydroYears);
 
   const applyPreset = (name: string) => {
-    const p = data.presets[name];
+    const p = data.presets[name]!;
     setInp({ solarGW: p.solarGW, windGW: p.windGW, hydroTWh: p.hydroTWh, nuclearUnits: p.nuclearUnits, growthPct: p.demandGrowthPct });
     setPreset(name);
   };
@@ -112,7 +112,7 @@ function SimulatorPage() {
                 <button
                   key={k}
                   type="button"
-                  onClick={() => set({ hydroTWh: data.hydroYears[k] })}
+                  onClick={() => set({ hydroTWh: data.hydroYears[k]! })}
                   className={`rounded-sm px-2.5 py-1 ${inputs.hydroTWh === data.hydroYears[k] ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground"}`}
                 >
                   {k}
