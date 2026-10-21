@@ -49,6 +49,23 @@ export function useDailyRecords() {
   });
 }
 
+export type DailyHistoryDay = {
+  date: string; // YYYY-MM-DD
+  hoursAvailable: number;
+  totalGWh: number;
+  renewableShare: number;
+  totalsGWh: Record<DailySource, number>;
+};
+
+export function useDailyHistory() {
+  return useQuery({
+    queryKey: ["daily-history"],
+    queryFn: () => fetchJson<DailyHistoryDay[]>(`${BASE}/history.json`),
+    retry: 1,
+    staleTime: 30 * 60 * 1000,
+  });
+}
+
 /** "2026-10-19" -> "19 October 2026" */
 export function fmtDate(iso: string): string {
   const [y, m, d] = iso.split("-").map(Number);
