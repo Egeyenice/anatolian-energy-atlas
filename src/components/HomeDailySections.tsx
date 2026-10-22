@@ -1,9 +1,9 @@
 import { useMemo, useState, type ReactNode } from "react";
 import { Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import { ChartTooltip } from "@/components/ChartTooltip";
-import { Analysis } from "@/components/site";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { DailyDataNote } from "@/components/DailyDataNote";
-import { fmtDate, fmtHistoryRange, historyHighlights, isPartialMonth, latestHistoryDate, latestHistoryYear, useDailyHistory, type DailyHistoryDay, type DailySource } from "@/lib/daily";
+import { defaultHistoryYear, historyYear, historyYears, monthlyHistoryHighlights, fmtDate, fmtHistoryRange, historyHighlights, isPartialMonth, latestHistoryDate, useDailyHistory, type DailyHistoryDay, type DailySource } from "@/lib/daily";
 import { fmt, SOURCE_COLORS, SOURCE_LABELS } from "@/lib/energy";
 
 const DAILY_SOURCES = ["coal", "gas", "other_fossil", "hydro", "wind", "solar", "other_renewables", "other"] as const;
@@ -18,12 +18,14 @@ const parseDate = (iso: string) => new Date(+iso.slice(0, 4), +iso.slice(5, 7) -
 
 export function HomeDailySections() {
   const q = useDailyHistory();
-  const days = useMemo(() => latestHistoryYear(q.data ?? []), [q.data]);
-  const firstDay = days[0];
+  const [selectedYear, setSelectedYear] = useState<number>();
+  const years = useMemo(() => historyYears(q.data ?? []), [q.data]);
+  const year = selectedYear !== undefined && years.includes(selectedYear) ? selectedYear : defaultHistoryYear(q.data ?? []) ?? years.at(-1);
+  const days = useMemo(() => year === undefined ? [] : historyYear(q.data ?? [], year), [q.data, year]);
 
   if (q.status === "error") return null;
 
-  if (q.status === "pending" || !firstDay) {
+  if (q.status === "pending" || year === undefined) {
     return (
       <section className="border-t border-border py-12" aria-hidden>
         <div className="space-y-4">
@@ -35,28 +37,39 @@ export function HomeDailySections() {
     );
   }
 
-  const year = parseDate(firstDay.date).getFullYear();
   const dataThrough = latestHistoryDate(q.data ?? []);
 
   return (
-    <>
-      <CalendarHeatmap days={days} year={year} dataThrough={dataThrough} />
-      <MonthByMonth days={days} year={year} dataThrough={dataThrough} />
-      <WeekdayChart days={days} year={year} dataThrough={dataThrough} />
-    </>
+    <Tabs value={String(year)} onValueChange={(value) => setSelectedYear(Number(value))} className="mt-6">
+      <TabsList aria-label="Daily data year" className="h-auto max-w-full flex-wrap justify-start rounded-sm">
+        {years.map((y) => <TabsTrigger key={y} value={String(y)} className="rounded-sm">{y}</TabsTrigger>)}
+      </TabsList>
+      <TabsContent value={String(year)} key={year}>
+        <CalendarHeatmap days={days} year={year} dataThrough={dataThrough} />
+        <MonthByMonth days={days} year={year} dataThrough={dataThrough} />
+        <WeekdayChart days={days} year={year} dataThrough={dataThrough} />
+      </TabsContent>
+    </Tabs>
   );
 }
 
-function Section({ kicker, title, children, dataThrough, showPlaceholder = true }: { kicker: string; title: string; children: ReactNode; dataThrough?: string | undefined; showPlaceholder?: boolean }) {
+function Section({ kicker, title, children, dataThrough }: { kicker: string; title: string; children: ReactNode; dataThrough?: string | undefined }) {
   return (
     <section className="border-t border-border py-12">
       <p className="mb-2 text-xs font-semibold uppercase tracking-widest text-accent-foreground">{kicker}</p>
       <h2 className="font-serif text-2xl font-semibold text-foreground md:text-3xl">{title}</h2>
       {children}
       <DailyDataNote date={dataThrough} />
-      {showPlaceholder && <Analysis text="[MY NOTE – to be written]" />}
     </section>
   );
+}
+
+function YearNotes({ year, children }: { year: number; children: ReactNode }) {
+  if (year !== 2026) return null;
+  return <div className="mt-6 max-w-3xl space-y-4 leading-relaxed text-foreground">
+    <p className="text-xs font-semibold text-muted-foreground">Notes on 2026</p>
+    {children}
+  </div>;
 }
 
 /* ---------- 1. Calendar heatmap ---------- */
@@ -94,16 +107,16 @@ function CalendarHeatmap({ days, year, dataThrough }: HistoryChartProps) {
     for (const c of cells) {
       const m = parseDate(c.d.date).getMonth();
       if (m !== prevM) {
-        months.push({ label: MONTHS[m]!, col: c.col });
+        months.push({ label: MONTHS[m] ?? "", col: c.col });
         prevM = m;
       }
     }
     const shares = days.map((d) => d.renewableShare);
-    return { cells, months, cols, min: Math.min(...shares), max: Math.max(...shares) };
+    return { cells, months, cols: cells.length ? cols : 1, min: shares.length ? Math.min(...shares) : 0, max: shares.length ? Math.max(...shares) : 0 };
   }, [days, year]);
 
   const color = (v: number) =>
-    GREENS[Math.min(GREENS.length - 1, Math.floor(((v - min) / (max - min || 1)) * GREENS.length))]!;
+    GREENS[Math.min(GREENS.length - 1, Math.floor(((v - min) / (max - min || 1)) * GREENS.length))] ?? GREENS[0];
 
   const left = 30;
   const top = 18;
@@ -111,7 +124,8 @@ function CalendarHeatmap({ days, year, dataThrough }: HistoryChartProps) {
   const h = top + 7 * PITCH;
 
   return (
-    <Section kicker={`${year}, day by day`} title={`Renewable share of electricity, every day in ${year}`} dataThrough={dataThrough} showPlaceholder={false}>
+    <Section kicker={`${year}, day by day`} title={`Renewable share of electricity, every day in ${year}`} dataThrough={dataThrough}>
+      {days.length === 0 && <p className="mt-4 text-sm text-muted-foreground">No complete days available for {year} yet.</p>}
       <div className="mt-6 overflow-x-auto rounded-sm border border-border bg-card p-4">
         <svg width={w} height={h} className="block" style={{ minWidth: w }} role="img"
           aria-label={`Calendar heatmap of daily renewable share in ${year}`}>
@@ -173,12 +187,12 @@ function CalendarHeatmap({ days, year, dataThrough }: HistoryChartProps) {
           ))}
         </dl>
       </aside>
-      <div className="mt-6 max-w-3xl space-y-4 leading-relaxed text-foreground">
+      <YearNotes year={year}>
         <h3 className="font-serif text-xl font-semibold text-foreground">The holiday effect</h3>
         <p>When I first saw the heatmap, the darkest green patch at the end of May caught my eye. I assumed it was just a rainy, windy week. It turned out to be something else too: a holiday.</p>
         <p>The six days with the lowest electricity generation of the whole year, 26–31 May, line up almost exactly with Kurban Bayramı (Eid al-Adha), one of Türkiye's biggest public holidays. Factories and offices close, so demand drops sharply. At the same time, the dams were still full from the spring rain and snowmelt. Less demand plus plenty of water meant renewables could cover a much bigger slice of it. The record day, 29 May, fell right in the middle of the holiday.</p>
         <p>You can see a smaller version of the same thing in March, around Ramazan Bayramı (Eid al-Fitr), when generation dipped and renewables climbed above 70%.</p>
-      </div>
+      </YearNotes>
     </Section>
   );
 }
@@ -187,6 +201,10 @@ function CalendarHeatmap({ days, year, dataThrough }: HistoryChartProps) {
 
 function MonthByMonth({ days, year, dataThrough }: HistoryChartProps) {
   const [mode, setMode] = useState<"gwh" | "share">("gwh");
+  const highlights = useMemo(() => monthlyHistoryHighlights(days, year), [days, year]);
+  const monthValue = (value: typeof highlights.hydro) => value
+    ? `${new Intl.DateTimeFormat("en-GB", { month: "long", timeZone: "UTC" }).format(new Date(`${value.month}-01T00:00:00Z`))} · ${fmt(value.share)}%`
+    : "No months with at least 20 days yet";
 
   const { data, partialLabels, lastDate } = useMemo(() => {
     const byMonth = new Map<number, DailyHistoryDay[]>();
@@ -269,6 +287,24 @@ function MonthByMonth({ days, year, dataThrough }: HistoryChartProps) {
           </p>
         )}
       </div>
+      <aside aria-labelledby="monthly-highlights-title" className="mt-4 rounded-sm border border-border bg-secondary p-4 md:p-5">
+        <h3 id="monthly-highlights-title" className="text-sm font-semibold text-foreground">Highlights</h3>
+        <dl className="mt-3 grid gap-x-6 gap-y-3 text-sm sm:grid-cols-3">
+          {[
+            { label: "Highest hydro share", value: highlights.hydro },
+            { label: "Most gas-heavy month", value: highlights.gas },
+            { label: "Windiest month", value: highlights.wind },
+          ].map(({ label, value }) => <div key={label}>
+            <dt className="text-muted-foreground">{label}</dt>
+            <dd className="mt-1 font-medium text-foreground">{monthValue(value)}</dd>
+          </div>)}
+        </dl>
+      </aside>
+      <YearNotes year={year}>
+        <h3 className="font-serif text-xl font-semibold text-foreground">Snowmelt season</h3>
+        <p>Hydropower in Türkiye follows the seasons. In January 2026 it supplied just 14% of the country's electricity. By May it was close to half. As the snow in the mountains melts in spring, rivers swell and the dams fill up.</p>
+        <p>Winter is the opposite. There is less water in the rivers and more demand for heating and lighting, so gas plants have to work much harder. On the bright side, winter is also when the wind tends to blow strongest.</p>
+      </YearNotes>
     </Section>
   );
 }
@@ -280,10 +316,13 @@ function WeekdayChart({ days, year, dataThrough }: HistoryChartProps) {
     const sums = Array.from({ length: 7 }, () => ({ sum: 0, n: 0 }));
     for (const d of days) {
       const wd = (parseDate(d.date).getDay() + 6) % 7;
-      sums[wd]!.sum += d.totalGWh;
-      sums[wd]!.n += 1;
+      const bucket = sums[wd];
+      if (bucket) { bucket.sum += d.totalGWh; bucket.n += 1; }
     }
-    return WEEKDAYS.map((day, i) => ({ day, gwh: sums[i]!.n ? sums[i]!.sum / sums[i]!.n : 0 }));
+    return WEEKDAYS.map((day, i) => {
+      const bucket = sums[i];
+      return { day, gwh: bucket?.n ? bucket.sum / bucket.n : 0 };
+    });
   }, [days]);
 
   return (
@@ -307,6 +346,12 @@ function WeekdayChart({ days, year, dataThrough }: HistoryChartProps) {
           </ResponsiveContainer>
         </div>
       </div>
+      <YearNotes year={year}>
+        <h3 className="font-serif text-xl font-semibold text-foreground">Sunday is different</h3>
+        <p>On an average Sunday, Türkiye generates about 15% less electricity than on a weekday. Saturdays are only about 5% lower. Most offices and many factories are closed on Sunday, and you can see it in the data.</p>
+        <p>What surprised me is which power plants slow down. Gas generation drops by almost half on Sundays, while coal falls by only about 12%. When demand goes down, gas is the first thing to be turned off. It is the same pattern I found on the Hydro &amp; Drought page: coal plants run steadily in the background, and gas plants are the ones that move up and down.</p>
+        <p>Renewables, meanwhile, keep producing as usual. So on Sundays their share of the total rises, about 4 percentage points higher than on a typical weekday.</p>
+      </YearNotes>
     </Section>
   );
 }
