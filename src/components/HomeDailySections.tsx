@@ -174,6 +174,7 @@ function CalendarHeatmap({ days, year, dataThrough }: HistoryChartProps) {
         </dl>
       </aside>
       <div className="mt-6 max-w-3xl space-y-4 leading-relaxed text-foreground">
+        <h3 className="font-serif text-xl font-semibold text-foreground">The holiday effect</h3>
         <p>When I first saw the heatmap, the darkest green patch at the end of May caught my eye. I assumed it was just a rainy, windy week. It turned out to be something else too: a holiday.</p>
         <p>The six days with the lowest electricity generation of the whole year, 26–31 May, line up almost exactly with Kurban Bayramı (Eid al-Adha), one of Türkiye's biggest public holidays. Factories and offices close, so demand drops sharply. At the same time, the dams were still full from the spring rain and snowmelt. Less demand plus plenty of water meant renewables could cover a much bigger slice of it. The record day, 29 May, fell right in the middle of the holiday.</p>
         <p>You can see a smaller version of the same thing in March, around Ramazan Bayramı (Eid al-Fitr), when generation dipped and renewables climbed above 70%.</p>
