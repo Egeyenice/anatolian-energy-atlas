@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { Bar, BarChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import { Analysis, DataState, PageHeader, type AnalysisSection } from "@/components/site";
@@ -47,7 +47,13 @@ const SIMULATOR_ANALYSIS: AnalysisSection[] = [
   {
     heading: "What the model can't see",
     paragraphs: [
-      "The model only looks at yearly totals, and that hides a real problem. Solar only works during the day. Long before solar could cover a whole year's demand, there would be sunny afternoons with more electricity than anyone needs, and none in the evening. That's why storage, which I wrote about on the Trends page, is going to matter more by the time. If I keep working on this, an hour-by-hour version of the model is the next thing I'd like to build.",
+      <>
+        The model only looks at yearly totals, and that hides a real problem. Solar only works during the day. Long before solar could cover a whole year's demand, there would be sunny afternoons with more electricity than anyone needs, and none in the evening. That's why storage, which I wrote about on{" "}
+        <Link to="/trends" className="text-primary underline underline-offset-2">
+          the Trends page
+        </Link>
+        , is going to matter more by the time. If I keep working on this, an hour-by-hour version of the model is the next thing I'd like to build.
+      </>,
     ],
   },
 ];
