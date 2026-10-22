@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { Bar, BarChart, CartesianGrid, Cell, Line, LineChart, ReferenceLine, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
-import { Analysis, DataState, PageHeader } from "@/components/site";
+import { Analysis, DataState, PageHeader, type AnalysisSection } from "@/components/site";
 import { ChartTooltip } from "@/components/ChartTooltip";
 import { METRIC_LABELS, latestYear, ranking, timeSeries, useComparisonData, type Metric } from "@/lib/comparison";
 
@@ -22,6 +22,18 @@ export const Route = createFileRoute("/compare")({
 const DEFAULT_ON = ["European Union (27)", "Germany", "Greece", "United States"];
 const LINE_COLORS = ["var(--src-hydro)", "var(--src-wind)", "var(--src-gas)", "var(--src-other-renewables)", "var(--src-nuclear)", "var(--src-other-fossil)", "var(--src-solar)", "var(--src-coal)"];
 const unitOf = (m: Metric) => (m === "renewableShare" ? "%" : " g");
+
+const RANKING_ANALYSIS: AnalysisSection[] = [
+  {
+    heading: "This one surprised me at first.",
+    paragraphs: [
+      "Türkiye gets more of its electricity from renewables than the United States does (43% vs. 26%), yet every kilowatt-hour it produces carries more carbon: 475 grams of CO₂e, compared with 384 in the US.",
+      "The answer is in the other half of the mix. About 60% of Türkiye's non-renewable electricity comes from coal, and much of that is low-quality lignite. The US relies mostly on natural gas, which emits roughly half as much carbon as coal, and on nuclear power, which emits almost none.",
+      "So renewables are not the only way to clean up electricity. Getting rid of coal matters just as much, whatever replaces it.",
+    ],
+  },
+];
+
 
 function MetricToggle({ value, onChange }: { value: Metric; onChange: (m: Metric) => void }) {
   return (
@@ -115,7 +127,7 @@ function ComparePage() {
         </div>
         <SourceLine />
       </figure>
-      <Analysis />
+      <Analysis sections={RANKING_ANALYSIS} />
 
       <figure className="rounded-sm border border-border bg-card p-4 md:p-6">
         <div className="mb-4 flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
