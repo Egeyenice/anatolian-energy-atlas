@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { Bar, BarChart, CartesianGrid, Cell, Line, LineChart, ReferenceLine, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import { Analysis, DataState, PageHeader, type AnalysisSection } from "@/components/site";
@@ -47,7 +47,13 @@ const OVERTIME_ANALYSIS: AnalysisSection[] = [
     heading: "Conclusion",
     paragraphs: [
       "Türkiye began the century with a real advantage: plenty of hydropower. But it did not build on that lead with other renewables as fast as Europe did. Meanwhile, its electricity demand almost tripled, from 124 TWh in 2000 to 354 TWh in 2025, while demand across most of Europe barely moved. Much of that extra electricity ended up coming from fossil fuels, above all coal.",
-      "Can Türkiye close the gap by 2035? The Simulator lets you test it yourself.",
+      <>
+        Can Türkiye close the gap by 2035?{" "}
+        <Link to="/simulator" className="text-primary underline underline-offset-2">
+          The Simulator
+        </Link>{" "}
+        lets you test it yourself.
+      </>,
     ],
   },
 ];
