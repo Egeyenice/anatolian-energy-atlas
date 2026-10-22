@@ -1,7 +1,7 @@
 import { useMemo, useState, type ReactNode } from "react";
 import { Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import { ChartTooltip } from "@/components/ChartTooltip";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Button } from "@/components/ui/button";
 import { DailyDataNote } from "@/components/DailyDataNote";
 import { hasHistoryNotes, defaultHistoryYear, historyYear, historyYears, monthlyHistoryHighlights, fmtDate, fmtHistoryRange, historyHighlights, isPartialMonth, latestHistoryDate, useDailyHistory, type DailyHistoryDay, type DailySource } from "@/lib/daily";
 import { fmt, SOURCE_COLORS, SOURCE_LABELS } from "@/lib/energy";
@@ -40,16 +40,40 @@ export function HomeDailySections() {
   const dataThrough = latestHistoryDate(q.data ?? []);
 
   return (
-    <Tabs value={String(year)} onValueChange={(value) => setSelectedYear(Number(value))} className="mt-6">
-      <TabsList aria-label="Daily data year" className="h-auto max-w-full flex-wrap justify-start rounded-sm">
-        {years.map((y) => <TabsTrigger key={y} value={String(y)} className="rounded-sm">{y}</TabsTrigger>)}
-      </TabsList>
-      <TabsContent value={String(year)} key={year}>
+    <div className="mt-6">
+      <div role="tablist" aria-label="Daily data year" className="inline-flex max-w-full flex-wrap gap-1 rounded-sm bg-muted p-1">
+        {years.map((y) => <Button
+          key={y}
+          id={`daily-year-${y}`}
+          role="tab"
+          type="button"
+          size="sm"
+          variant={year === y ? "secondary" : "ghost"}
+          aria-selected={year === y}
+          aria-controls="daily-year-panel"
+          tabIndex={year === y ? 0 : -1}
+          className={year === y ? "rounded-sm bg-background text-foreground" : "rounded-sm text-muted-foreground"}
+          onClick={() => setSelectedYear(y)}
+          onKeyDown={(event) => {
+            const index = years.indexOf(y);
+            const nextIndex = event.key === "ArrowRight" ? (index + 1) % years.length
+              : event.key === "ArrowLeft" ? (index - 1 + years.length) % years.length
+              : event.key === "Home" ? 0 : event.key === "End" ? years.length - 1 : undefined;
+            if (nextIndex === undefined) return;
+            const nextYear = years[nextIndex];
+            if (nextYear === undefined) return;
+            event.preventDefault();
+            setSelectedYear(nextYear);
+            document.getElementById(`daily-year-${nextYear}`)?.focus();
+          }}
+        >{y}</Button>)}
+      </div>
+      <div role="tabpanel" id="daily-year-panel" aria-labelledby={`daily-year-${year}`} tabIndex={0} key={year} className="mt-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
         <CalendarHeatmap days={days} year={year} dataThrough={dataThrough} />
         <MonthByMonth days={days} year={year} dataThrough={dataThrough} />
         <WeekdayChart days={days} year={year} dataThrough={dataThrough} />
-      </TabsContent>
-    </Tabs>
+      </div>
+    </div>
   );
 }
 
