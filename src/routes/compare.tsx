@@ -34,6 +34,24 @@ const RANKING_ANALYSIS: AnalysisSection[] = [
   },
 ];
 
+const OVERTIME_ANALYSIS: AnalysisSection[] = [
+  {
+    heading: "Back in 2000, Türkiye was ahead.",
+    paragraphs: [
+      "A quarter of its electricity came from renewables, more than in Germany (6%), Greece (8%), Spain (16%) or the EU as a whole (16%). Twenty-five years later, every one of them has passed it.",
+      "Carbon intensity tells the same story. Greece cut the carbon intensity of its electricity by 62% over this period, and Spain by 67%. Türkiye managed 17%.",
+      "A big part of the difference is policy. EU countries made renewables a priority and committed to shared, binding targets. Germany and Spain started paying guaranteed prices for renewable electricity early on, even to small producers, which pulled in a wave of investment. The EU's carbon market added another push: it puts a price on every tonne of CO₂, so burning coal became more and more expensive. That is a big reason why Greece and Spain moved away from it so quickly. Türkiye has its own guaranteed-price scheme, YEKDEM, but it came later and has never been paired with a carbon price.",
+    ],
+  },
+  {
+    heading: "Conclusion",
+    paragraphs: [
+      "Türkiye began the century with a real advantage: plenty of hydropower. But it did not build on that lead with other renewables as fast as Europe did. Meanwhile, its electricity demand almost tripled, from 124 TWh in 2000 to 354 TWh in 2025, while demand across most of Europe barely moved. Much of that extra electricity ended up coming from fossil fuels, above all coal.",
+      "Can Türkiye close the gap by 2035? The Simulator lets you test it yourself.",
+    ],
+  },
+];
+
 
 function MetricToggle({ value, onChange }: { value: Metric; onChange: (m: Metric) => void }) {
   return (
@@ -170,7 +188,7 @@ function ComparePage() {
         </div>
         <SourceLine />
       </figure>
-      <Analysis />
+      <Analysis sections={OVERTIME_ANALYSIS} />
     </div>
   );
 }
