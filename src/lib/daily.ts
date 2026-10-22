@@ -15,13 +15,6 @@ export type DailyLatest = {
   renewableShare: number;
 };
 
-export type DailyRecords = {
-  year: number;
-  daysCounted: number;
-  recordWindDay: { date: string; windGWh: number };
-  recordSolarDay: { date: string; solarGWh: number };
-  recordRenewableShareDay: { date: string; renewableShare: number };
-};
 
 const BASE = "https://raw.githubusercontent.com/Egeyenice/anatolian-energy-atlas/main/public/data/daily";
 
@@ -40,14 +33,6 @@ export function useDailyLatest() {
   });
 }
 
-export function useDailyRecords() {
-  return useQuery({
-    queryKey: ["daily-records"],
-    queryFn: () => fetchJson<DailyRecords>(`${BASE}/records.json`),
-    retry: 1,
-    staleTime: 30 * 60 * 1000,
-  });
-}
 
 export type DailyHistoryDay = {
   date: string; // YYYY-MM-DD
@@ -89,6 +74,12 @@ export function defaultHistoryYear(days: DailyHistoryDay[]): number | undefined 
   const years = historyYears(days).reverse();
   return years.find((year) => historyYear(days, year).length >= 60)
     ?? years.find((year) => historyYear(days, year).length > 0);
+}
+
+/** Resolve the year every daily section shows: a tab choice that has data, otherwise the default year. */
+export function selectedHistoryYear(days: DailyHistoryDay[], chosen: number | undefined): number | undefined {
+  const years = historyYears(days);
+  return chosen !== undefined && years.includes(chosen) ? chosen : defaultHistoryYear(days) ?? years.at(-1);
 }
 
 export function hasHistoryNotes(year: number): boolean {
@@ -133,6 +124,31 @@ export function historyHighlights(history: DailyHistoryDay[]) {
     if (!leastGreenWeek || result.average < leastGreenWeek.average) leastGreenWeek = result;
   }
   return { greenestWeek, leastGreenWeek, recordDay, above50: days.filter((day) => day.renewableShare > 50).length, totalDays: days.length };
+}
+
+export type DailyRecordSet = {
+  year: number;
+  recordWindDay: { date: string; windGWh: number };
+  recordSolarDay: { date: string; solarGWh: number };
+  recordRenewableShareDay: { date: string; renewableShare: number };
+};
+
+/** Highest single-day wind, solar and renewable-share values among one year's complete days. */
+export function historyRecords(days: DailyHistoryDay[], year: number | undefined): DailyRecordSet | undefined {
+  if (year === undefined) return undefined;
+  const yearDays = historyYear(days, year);
+  if (yearDays.length === 0) return undefined;
+  const highest = (value: (day: DailyHistoryDay) => number) =>
+    yearDays.reduce<DailyHistoryDay>((best, d) => (value(d) > value(best) ? d : best), yearDays[0]!);
+  const wind = highest((d) => d.totalsGWh.wind ?? 0);
+  const solar = highest((d) => d.totalsGWh.solar ?? 0);
+  const share = highest((d) => d.renewableShare);
+  return {
+    year,
+    recordWindDay: { date: wind.date, windGWh: wind.totalsGWh.wind ?? 0 },
+    recordSolarDay: { date: solar.date, solarGWh: solar.totalsGWh.solar ?? 0 },
+    recordRenewableShareDay: { date: share.date, renewableShare: share.renewableShare },
+  };
 }
 
 export function fmtHistoryRange(start: string, end = start): string {

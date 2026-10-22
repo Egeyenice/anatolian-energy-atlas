@@ -3,7 +3,7 @@ import { Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxi
 import { ChartTooltip } from "@/components/ChartTooltip";
 import { Button } from "@/components/ui/button";
 import { DailyDataNote } from "@/components/DailyDataNote";
-import { hasHistoryNotes, defaultHistoryYear, historyYear, historyYears, monthlyHistoryHighlights, fmtDate, fmtHistoryRange, historyHighlights, isPartialMonth, latestHistoryDate, useDailyHistory, type DailyHistoryDay, type DailySource } from "@/lib/daily";
+import { hasHistoryNotes, selectedHistoryYear, historyYear, historyYears, monthlyHistoryHighlights, fmtDate, fmtHistoryRange, historyHighlights, isPartialMonth, latestHistoryDate, useDailyHistory, type DailyHistoryDay, type DailySource } from "@/lib/daily";
 import { fmt, SOURCE_COLORS, SOURCE_LABELS } from "@/lib/energy";
 
 const DAILY_SOURCES = ["coal", "gas", "other_fossil", "hydro", "wind", "solar", "other_renewables", "other"] as const;
@@ -16,11 +16,10 @@ const WEEKDAYS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
 const parseDate = (iso: string) => new Date(+iso.slice(0, 4), +iso.slice(5, 7) - 1, +iso.slice(8, 10));
 
-export function HomeDailySections() {
+export function HomeDailySections({ yearChoice, onYearChoice }: { yearChoice: number | undefined; onYearChoice: (year: number) => void }) {
   const q = useDailyHistory();
-  const [selectedYear, setSelectedYear] = useState<number>();
   const years = useMemo(() => historyYears(q.data ?? []), [q.data]);
-  const year = selectedYear !== undefined && years.includes(selectedYear) ? selectedYear : defaultHistoryYear(q.data ?? []) ?? years.at(-1);
+  const year = selectedHistoryYear(q.data ?? [], yearChoice);
   const days = useMemo(() => year === undefined ? [] : historyYear(q.data ?? [], year), [q.data, year]);
 
   if (q.status === "error") return null;
@@ -53,7 +52,7 @@ export function HomeDailySections() {
           aria-controls="daily-year-panel"
           tabIndex={year === y ? 0 : -1}
           className={year === y ? "rounded-sm bg-background text-foreground" : "rounded-sm text-muted-foreground"}
-          onClick={() => setSelectedYear(y)}
+          onClick={() => onYearChoice(y)}
           onKeyDown={(event) => {
             const index = years.indexOf(y);
             const nextIndex = event.key === "ArrowRight" ? (index + 1) % years.length
@@ -63,7 +62,7 @@ export function HomeDailySections() {
             const nextYear = years[nextIndex];
             if (nextYear === undefined) return;
             event.preventDefault();
-            setSelectedYear(nextYear);
+            onYearChoice(nextYear);
             document.getElementById(`daily-year-${nextYear}`)?.focus();
           }}
         >{y}</Button>)}

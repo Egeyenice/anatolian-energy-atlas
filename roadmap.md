@@ -4,3 +4,4 @@
 - [x] Add and verify Home daily freshness/source captions and the annual-data note while preserving calendar rules.
 - [x] Add calculated heatmap highlights and the user's unchanged holiday prose; verify the rules and Home display.
 - [x] Add shared Home year tabs, eligible monthly highlights, and 2026-only notes; verify calculations and year switching.
+- [x] Calculate Home record cards from history.json with the shared year rule and update the Akkuyu map note; verify cards, popup and mobile layout.

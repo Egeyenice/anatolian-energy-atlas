@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { computeStats, fmt, renewableShare, SOURCE_COLORS, SOURCE_LABELS, total, useEnergyData, type YearRow } from "@/lib/energy";
 import { DataState } from "@/components/site";
@@ -28,6 +29,7 @@ const PAGES = [
 ] as const;
 
 function Index() {
+  const [yearChoice, setYearChoice] = useState<number>();
   const { data, status } = useEnergyData();
   const s = data && data.years.length ? computeStats(data.years) : null;
 
@@ -43,9 +45,9 @@ function Index() {
         </p>
       </section>
 
-      <YesterdaySection />
+      <YesterdaySection yearChoice={yearChoice} />
 
-      <HomeDailySections />
+      <HomeDailySections yearChoice={yearChoice} onYearChoice={setYearChoice} />
 
       {s ? (
         <section className="grid gap-4 md:grid-cols-3">
