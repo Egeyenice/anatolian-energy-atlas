@@ -3,7 +3,7 @@ import { Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxi
 import { ChartTooltip } from "@/components/ChartTooltip";
 import { Analysis } from "@/components/site";
 import { DailyDataNote } from "@/components/DailyDataNote";
-import { fmtDate, isPartialMonth, latestHistoryDate, latestHistoryYear, useDailyHistory, type DailyHistoryDay, type DailySource } from "@/lib/daily";
+import { fmtDate, fmtHistoryRange, historyHighlights, isPartialMonth, latestHistoryDate, latestHistoryYear, useDailyHistory, type DailyHistoryDay, type DailySource } from "@/lib/daily";
 import { fmt, SOURCE_COLORS, SOURCE_LABELS } from "@/lib/energy";
 
 const DAILY_SOURCES = ["coal", "gas", "other_fossil", "hydro", "wind", "solar", "other_renewables", "other"] as const;
@@ -47,14 +47,14 @@ export function HomeDailySections() {
   );
 }
 
-function Section({ kicker, title, children, dataThrough }: { kicker: string; title: string; children: ReactNode; dataThrough?: string | undefined }) {
+function Section({ kicker, title, children, dataThrough, showPlaceholder = true }: { kicker: string; title: string; children: ReactNode; dataThrough?: string | undefined; showPlaceholder?: boolean }) {
   return (
     <section className="border-t border-border py-12">
       <p className="mb-2 text-xs font-semibold uppercase tracking-widest text-accent-foreground">{kicker}</p>
       <h2 className="font-serif text-2xl font-semibold text-foreground md:text-3xl">{title}</h2>
       {children}
       <DailyDataNote date={dataThrough} />
-      <Analysis text="[MY NOTE – to be written]" />
+      {showPlaceholder && <Analysis text="[MY NOTE – to be written]" />}
     </section>
   );
 }
@@ -75,6 +75,10 @@ type HistoryChartProps = { days: DailyHistoryDay[]; year: number; dataThrough?: 
 
 function CalendarHeatmap({ days, year, dataThrough }: HistoryChartProps) {
   const [hover, setHover] = useState<DailyHistoryDay | null>(null);
+  const highlights = useMemo(() => historyHighlights(days), [days]);
+  const weekValue = (week: typeof highlights.greenestWeek) => week
+    ? `${fmtHistoryRange(week.start, week.end)} · ${fmt(week.average)}%`
+    : "Not enough consecutive days yet";
 
   const { cells, months, cols, min, max } = useMemo(() => {
     const jan1 = new Date(year, 0, 1);
@@ -107,7 +111,7 @@ function CalendarHeatmap({ days, year, dataThrough }: HistoryChartProps) {
   const h = top + 7 * PITCH;
 
   return (
-    <Section kicker={`${year}, day by day`} title={`Renewable share of electricity, every day in ${year}`} dataThrough={dataThrough}>
+    <Section kicker={`${year}, day by day`} title={`Renewable share of electricity, every day in ${year}`} dataThrough={dataThrough} showPlaceholder={false}>
       <div className="mt-6 overflow-x-auto rounded-sm border border-border bg-card p-4">
         <svg width={w} height={h} className="block" style={{ minWidth: w }} role="img"
           aria-label={`Calendar heatmap of daily renewable share in ${year}`}>
@@ -152,6 +156,27 @@ function CalendarHeatmap({ days, year, dataThrough }: HistoryChartProps) {
             ? `${fmtDate(hover.date)} · ${fmt(hover.renewableShare)}% renewable · ${fmt(hover.totalGWh, 0)} GWh total`
             : "Hover or tap a day for details"}
         </p>
+      </div>
+      <aside aria-labelledby="heatmap-highlights-title" className="mt-4 rounded-sm border border-border bg-secondary p-4 md:p-5">
+        <h3 id="heatmap-highlights-title" className="text-sm font-semibold text-foreground">Highlights so far</h3>
+        <dl className="mt-3 grid gap-x-6 gap-y-3 text-sm sm:grid-cols-2">
+          {[
+            { label: "Greenest week", value: weekValue(highlights.greenestWeek) },
+            { label: "Least green week", value: weekValue(highlights.leastGreenWeek) },
+            { label: "Record day", value: highlights.recordDay ? `${fmtHistoryRange(highlights.recordDay.date)} · ${fmt(highlights.recordDay.renewableShare)}%` : "No complete days yet" },
+            { label: "Days above 50% renewables", value: `${highlights.above50} out of ${highlights.totalDays} days counted` },
+          ].map(({ label, value }) => (
+            <div key={label}>
+              <dt className="text-muted-foreground">{label}</dt>
+              <dd className="mt-1 font-medium text-foreground">{value}</dd>
+            </div>
+          ))}
+        </dl>
+      </aside>
+      <div className="mt-6 max-w-3xl space-y-4 leading-relaxed text-foreground">
+        <p>When I first saw the heatmap, the darkest green patch at the end of May caught my eye. I assumed it was just a rainy, windy week. It turned out to be something else too: a holiday.</p>
+        <p>The six days with the lowest electricity generation of the whole year, 26–31 May, line up almost exactly with Kurban Bayramı (Eid al-Adha), one of Türkiye's biggest public holidays. Factories and offices close, so demand drops sharply. At the same time, the dams were still full from the spring rain and snowmelt. Less demand plus plenty of water meant renewables could cover a much bigger slice of it. The record day, 29 May, fell right in the middle of the holiday.</p>
+        <p>You can see a smaller version of the same thing in March, around Ramazan Bayramı (Eid al-Fitr), when generation dipped and renewables climbed above 70%.</p>
       </div>
     </Section>
   );

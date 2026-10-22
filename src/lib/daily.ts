@@ -78,6 +78,37 @@ export function latestHistoryYear(days: DailyHistoryDay[]): DailyHistoryDay[] {
     .sort((a, b) => a.date.localeCompare(b.date));
 }
 
+type HighlightWeek = { start: string; end: string; average: number };
+
+/** Rolling weeks require seven distinct, consecutive complete calendar days. */
+export function historyHighlights(history: DailyHistoryDay[]) {
+  const days = [...new Map(latestHistoryYear(history).map((day) => [day.date, day])).values()];
+  let greenestWeek: HighlightWeek | undefined;
+  let leastGreenWeek: HighlightWeek | undefined;
+  let recordDay: DailyHistoryDay | undefined;
+  for (const day of days) {
+    if (!recordDay || day.renewableShare > recordDay.renewableShare) recordDay = day;
+  }
+  for (let i = 0; i <= days.length - 7; i++) {
+    const week = days.slice(i, i + 7);
+    const start = week[0];
+    const end = week[6];
+    if (!start || !end || Date.parse(end.date) - Date.parse(start.date) !== 6 * 86400000) continue;
+    const result = { start: start.date, end: end.date, average: week.reduce((sum, day) => sum + day.renewableShare, 0) / 7 };
+    if (!greenestWeek || result.average > greenestWeek.average) greenestWeek = result;
+    if (!leastGreenWeek || result.average < leastGreenWeek.average) leastGreenWeek = result;
+  }
+  return { greenestWeek, leastGreenWeek, recordDay, above50: days.filter((day) => day.renewableShare > 50).length, totalDays: days.length };
+}
+
+export function fmtHistoryRange(start: string, end = start): string {
+  const format = (date: string) => new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "long", timeZone: "UTC" }).format(new Date(`${date}T00:00:00Z`));
+  if (start === end) return format(start);
+  return start.slice(0, 7) === end.slice(0, 7)
+    ? `${Number(start.slice(8, 10))}–${format(end)}`
+    : `${format(start)}–${format(end)}`;
+}
+
 export function isPartialMonth(year: number, month: number, days: DailyHistoryDay[]): boolean {
   const dates = new Set(days.filter((day) =>
     day.hoursAvailable === 24 && Number(day.date.slice(0, 4)) === year &&
