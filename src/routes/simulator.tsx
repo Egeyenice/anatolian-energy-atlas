@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { Bar, BarChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
-import { Analysis, DataState, PageHeader } from "@/components/site";
+import { Analysis, DataState, PageHeader, type AnalysisSection } from "@/components/site";
 import { ChartTooltip } from "@/components/ChartTooltip";
 import { fmt, SOURCE_COLORS, SOURCE_LABELS } from "@/lib/energy";
 import { simulate, useSimulatorData, type SimInputs, type SimulatorData } from "@/lib/simulator";
@@ -23,6 +23,34 @@ export const Route = createFileRoute("/simulator")({
 const MIX_KEYS = ["coal", "gas", "other_fossil", "hydro", "wind", "solar", "other_renewables", "nuclear"] as const;
 const MIX_LABELS: Record<(typeof MIX_KEYS)[number], string> = { ...SOURCE_LABELS, nuclear: "Nuclear" };
 const MIX_COLORS: Record<(typeof MIX_KEYS)[number], string> = { ...SOURCE_COLORS, nuclear: "var(--src-nuclear)" };
+
+const SIMULATOR_ANALYSIS: AnalysisSection[] = [
+  {
+    heading: "Capacity can be misleading.",
+    paragraphs: [
+      "Akkuyu's four units add up to only 4.8 GW, but they would produce more electricity than 20 GW of new solar panels. It all comes down to the capacity factor. A nuclear plant runs about 90% of the time. Solar panels in Türkiye only manage about 19%. Wind sits in between: for the same number of gigawatts, it gives you roughly 75% more electricity than solar. So looking at installed capacity alone tells us very little about how much electricity a country can generate.",
+    ],
+  },
+  {
+    heading: "Gas goes first, coal stays",
+    paragraphs: [
+      "Every clean source I added replaced gas first. Coal only started to drop once gas had hit its minimum. I actually found this by accident. Adding 20 GW of wind gave 70% more electricity than 20 GW of solar, but it didn't save 70% more gas, and I couldn't figure out why. It turned out the gas savings had hit a ceiling, and the extra wind power was pushing out coal instead.",
+      "We can also see this with real data.. In dry years, and even on Sundays, gas is what goes up and down while coal just continues to be burned. Gas plants are flexible and expensive to run, so they're the first to switch off when cheaper power shows up. Our problem is that coal puts out about twice as much carbon as gas for every kilowatt-hour. The really big drops in emissions only come when coal starts to go. A carbon price, like the one the EU has, might change that order.",
+    ],
+  },
+  {
+    heading: "What happens if nothing changes.",
+    paragraphs: [
+      "Over the last ten years, Türkiye's electricity demand has grown by about 3% a year, pushed by industry, growing cities and, more and more, things like electric cars. If that keeps up, demand in 2035 will be about 34% higher than in 2025. Without any new solar or wind, and even with Akkuyu running flat out, gas use would rise by 73 TWh a year and emissions would climb 22%. If Türkiye hits its 2035 solar and wind target, emissions drop by 42% instead. Same country, same demand,  but two very different futures, and the difference is almost entirely how much solar and wind gets built.",
+    ],
+  },
+  {
+    heading: "What the model can't see",
+    paragraphs: [
+      "The model only looks at yearly totals, and that hides a real problem. Solar only works during the day. Long before solar could cover a whole year's demand, there would be sunny afternoons with more electricity than anyone needs, and none in the evening. That's why storage, which I wrote about on the Trends page, is going to matter more by the time. If I keep working on this, an hour-by-hour version of the model is the next thing I'd like to build.",
+    ],
+  },
+];
 
 function defaults(d: SimulatorData): SimInputs {
   return { solarGW: d.solar.defaultGW, windGW: d.wind.defaultGW, hydroTWh: d.hydroYears["2025 actual"]!, nuclearUnits: 0, growthPct: d.demandGrowth.defaultPct };
@@ -216,7 +244,7 @@ function SimulatorPage() {
         </ul>
       </aside>
 
-      <Analysis />
+      <Analysis title="What I learned from playing with the model" sections={SIMULATOR_ANALYSIS} />
     </div>
   );
 }
