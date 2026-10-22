@@ -76,6 +76,12 @@ export function defaultHistoryYear(days: DailyHistoryDay[]): number | undefined 
     ?? years.find((year) => historyYear(days, year).length > 0);
 }
 
+/** Resolve the year every daily section shows: a tab choice that has data, otherwise the default year. */
+export function selectedHistoryYear(days: DailyHistoryDay[], chosen: number | undefined): number | undefined {
+  const years = historyYears(days);
+  return chosen !== undefined && years.includes(chosen) ? chosen : defaultHistoryYear(days) ?? years.at(-1);
+}
+
 export function hasHistoryNotes(year: number): boolean {
   return year === 2026;
 }
