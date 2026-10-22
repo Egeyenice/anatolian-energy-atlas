@@ -71,11 +71,45 @@ export function isDailyDataStale(date: string, now: Date): boolean {
 
 /** Select the latest year represented by usable daily data, independent of today's date. */
 export function latestHistoryYear(days: DailyHistoryDay[]): DailyHistoryDay[] {
-  const complete = days.filter((day) => day.hoursAvailable === 24);
-  const year = Math.max(...complete.map((day) => Number(day.date.slice(0, 4))));
-  return complete
-    .filter((day) => Number(day.date.slice(0, 4)) === year)
+  const year = Math.max(...days.filter((day) => day.hoursAvailable === 24).map((day) => Number(day.date.slice(0, 4))));
+  return historyYear(days, year);
+}
+
+export function historyYears(days: DailyHistoryDay[]): number[] {
+  return [...new Set(days.map((day) => Number(day.date.slice(0, 4))))].sort((a, b) => a - b);
+}
+
+export function historyYear(days: DailyHistoryDay[], year: number): DailyHistoryDay[] {
+  return [...new Map(days.filter((day) => day.hoursAvailable === 24 && Number(day.date.slice(0, 4)) === year)
+    .map((day) => [day.date, day])).values()]
     .sort((a, b) => a.date.localeCompare(b.date));
+}
+
+export function defaultHistoryYear(days: DailyHistoryDay[]): number | undefined {
+  const years = historyYears(days).reverse();
+  return years.find((year) => historyYear(days, year).length >= 60)
+    ?? years.find((year) => historyYear(days, year).length > 0);
+}
+
+export function hasHistoryNotes(year: number): boolean {
+  return year === 2026;
+}
+
+/** Rank source shares using aggregated generation, not averages of daily percentages. */
+export function monthlyHistoryHighlights(history: DailyHistoryDay[], year: number) {
+  const months = new Map<string, DailyHistoryDay[]>();
+  for (const day of historyYear(history, year)) {
+    const month = day.date.slice(0, 7);
+    months.set(month, [...(months.get(month) ?? []), day]);
+  }
+  const eligible = [...months.entries()].filter(([, days]) => days.length >= 20).map(([month, days]) => {
+    const total = days.reduce((sum, day) => sum + Object.values(day.totalsGWh).reduce((a, b) => a + b, 0), 0);
+    const share = (source: DailySource) => total > 0 ? days.reduce((sum, day) => sum + day.totalsGWh[source], 0) / total * 100 : 0;
+    return { month, hydro: share("hydro"), gas: share("gas"), wind: share("wind"), total };
+  }).filter((month) => month.total > 0);
+  const highest = (source: "hydro" | "gas" | "wind") => eligible.reduce<{ month: string; share: number } | undefined>((best, month) =>
+    !best || month[source] > best.share ? { month: month.month, share: month[source] } : best, undefined);
+  return { hydro: highest("hydro"), gas: highest("gas"), wind: highest("wind") };
 }
 
 type HighlightWeek = { start: string; end: string; average: number };

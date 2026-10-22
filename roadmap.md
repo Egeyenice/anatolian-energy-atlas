@@ -3,3 +3,4 @@
 - [x] Make Home history charts use the latest available year and mark only incomplete calendar months partial; verify regression tests and the Home page.
 - [x] Add and verify Home daily freshness/source captions and the annual-data note while preserving calendar rules.
 - [x] Add calculated heatmap highlights and the user's unchanged holiday prose; verify the rules and Home display.
+- [x] Add shared Home year tabs, eligible monthly highlights, and 2026-only notes; verify calculations and year switching.
