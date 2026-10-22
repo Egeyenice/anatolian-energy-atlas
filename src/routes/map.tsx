@@ -23,6 +23,30 @@ export const Route = createFileRoute("/map")({
 
 type Filter = "all" | Plant["type"];
 
+const MAP_ANALYSIS: AnalysisSection[] = [
+  {
+    heading: "Location tells you the fuel.",
+    paragraphs: [
+      "Looking at the map, a pattern jumps out: where a power plant is built says a lot about what it burns.",
+      "Every imported-coal plant on the map sits on the coast, in Zonguldak on the Black Sea, around İskenderun Bay, and near Biga on the Sea of Marmara. That makes sense. The coal arrives by ship, so the plants are built right next to the ports, and the sea also gives them easy access to the large amounts of cooling water they need.",
+      "Domestic lignite plants are the opposite. They are built right next to the mines, in places like Afşin-Elbistan, Soma and Muğla. Lignite contains a lot of water and gives off relatively little energy, so moving it far would mean paying to transport mostly water and ash. It is cheaper to burn it where it is dug up.",
+    ],
+  },
+  {
+    heading: "Water in the east, power in the west.",
+    paragraphs: [
+      "Türkiye's two biggest rivers, the Euphrates and the Tigris, flow through Eastern and Southeastern Anatolia, so that is where the largest dams are. Atatürk, Karakaya, Keban, Ilısu and Birecik together make up about two-thirds of the dam capacity shown on the map.",
+      "The big gas plants are on the other side of the country. All four on the map are in the Marmara region and Thrace, close to İstanbul, where the most electricity is used and where much of the imported gas enters the country. Building them close to demand keeps transmission costs and losses down.",
+    ],
+  },
+  {
+    heading: "A new kind of plant.",
+    paragraphs: [
+      "Türkiye's first nuclear power plant, Akkuyu, is being built on the Mediterranean coast for the same reason as the coal plants: a nuclear plant needs enormous amounts of cooling water, and the sea provides it.",
+    ],
+  },
+];
+
 function MapPage() {
   const { data, status } = useQuery({ queryKey: ["plants"], queryFn: fetchPlants, staleTime: 60 * 60 * 1000 });
   const [filter, setFilter] = useState<Filter>("all");
@@ -91,7 +115,7 @@ function MapPage() {
             {data.note} Sources: Wikipedia, Global Energy Monitor.
           </p>
 
-          <Analysis />
+          <Analysis sections={MAP_ANALYSIS} />
         </>
       )}
     </div>
