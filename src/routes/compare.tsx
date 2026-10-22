@@ -25,9 +25,9 @@ const unitOf = (m: Metric) => (m === "renewableShare" ? "%" : " g");
 
 const RANKING_ANALYSIS: AnalysisSection[] = [
   {
-    heading:
-      "This one surprised me at first. Türkiye gets more of its electricity from renewables than the United States does (43% vs. 26%), yet every kilowatt-hour it produces carries more carbon: 475 grams of CO₂e, compared with 384 in the US.",
+    heading: "This one surprised me at first.",
     paragraphs: [
+      "Türkiye gets more of its electricity from renewables than the United States does (43% vs. 26%), yet every kilowatt-hour it produces carries more carbon: 475 grams of CO₂e, compared with 384 in the US.",
       "The answer is in the other half of the mix. About 60% of Türkiye's non-renewable electricity comes from coal, and much of that is low-quality lignite. The US relies mostly on natural gas, which emits roughly half as much carbon as coal, and on nuclear power, which emits almost none.",
       "So renewables are not the only way to clean up electricity. Getting rid of coal matters just as much, whatever replaces it.",
     ],
