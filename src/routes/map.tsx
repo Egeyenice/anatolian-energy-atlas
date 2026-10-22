@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { ClientOnly } from "@tanstack/react-router";
 import { Suspense, lazy, useState } from "react";
 import { fetchPlants, PLANT_COLORS, PLANT_LABELS, PLANT_TYPES, type Plant } from "@/lib/plants";
-import { Analysis, DataState, PageHeader } from "@/components/site";
+import { Analysis, DataState, PageHeader, type AnalysisSection } from "@/components/site";
 
 const PlantsMap = lazy(() => import("@/components/PlantsMap"));
 
