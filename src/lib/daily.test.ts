@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { fmtHistoryRange, historyHighlights, isDailyDataStale, isPartialMonth, latestHistoryDate, latestHistoryYear, type DailyHistoryDay } from "./daily";
+import { defaultHistoryYear, historyYear, historyYears, monthlyHistoryHighlights, fmtHistoryRange, historyHighlights, isDailyDataStale, isPartialMonth, latestHistoryDate, latestHistoryYear, type DailyHistoryDay } from "./daily";
 
 function day(date: string, hoursAvailable = 24): DailyHistoryDay {
   return { date, hoursAvailable, totalGWh: 100, renewableShare: 50,
@@ -11,6 +11,38 @@ const monthDays = (year: number, month: number, count: number) =>
 afterEach(() => vi.useRealTimers());
 
 describe("Home daily history", () => {
+  it("defaults to the most recent year with at least 60 distinct complete days", () => {
+    const previous = [...monthDays(2026, 1, 31), ...monthDays(2026, 2, 28), day("2026-03-01")];
+    const next = [...monthDays(2027, 1, 31), ...monthDays(2027, 2, 28)];
+    expect(defaultHistoryYear([...previous, ...next, next[0] ?? day("2027-01-01"), day("2027-03-01", 23)])).toBe(2026);
+    expect(defaultHistoryYear([...previous, ...next, day("2027-03-01")])).toBe(2027);
+    expect(defaultHistoryYear([day("2026-01-01")])).toBe(2026);
+    expect(defaultHistoryYear([])).toBeUndefined();
+  });
+
+  it("lists every data year while selected-year calculations use distinct 24-hour days only", () => {
+    const days = [day("2025-12-31"), day("2026-01-01"), day("2026-01-01"), day("2026-01-02", 23), day("2027-01-01", 12)];
+    expect(historyYears(days)).toEqual([2025, 2026, 2027]);
+    expect(historyYear(days, 2026).map((d) => d.date)).toEqual(["2026-01-01"]);
+    expect(historyHighlights(historyYear(days, 2025)).recordDay?.date).toBe("2025-12-31");
+  });
+
+  it("counts months with at least 20 distinct complete days for monthly highlights", () => {
+    const eligible = monthDays(2026, 1, 20);
+    const short = monthDays(2026, 2, 19).map((d) => ({ ...d, totalsGWh: { ...d.totalsGWh, hydro: 100, coal: 0 } }));
+    expect(monthlyHistoryHighlights([...eligible, ...short, short[0] ?? day("2026-02-01"), day("2026-02-20", 23)], 2026).hydro).toEqual({ month: "2026-01", share: 50 });
+    expect(monthlyHistoryHighlights(short, 2026).hydro).toBeUndefined();
+  });
+
+  it("ranks hydro, gas and wind by aggregated monthly generation share for the selected year", () => {
+    const month = (m: number, hydro: number, gas: number, wind: number) => monthDays(2026, m, 20).map((d) => ({ ...d, totalsGWh: { ...d.totalsGWh, coal: 0, hydro, gas, wind } }));
+    const days = [...month(1, 60, 30, 10), ...month(2, 10, 70, 20), ...month(3, 20, 10, 70)];
+    expect(monthlyHistoryHighlights(days, 2026)).toEqual({ hydro: { month: "2026-01", share: 60 }, gas: { month: "2026-02", share: 70 }, wind: { month: "2026-03", share: 70 } });
+    expect(monthlyHistoryHighlights(days, 2025).gas).toBeUndefined();
+    const weighted = monthDays(2026, 4, 20).map((d, i) => ({ ...d, totalsGWh: { ...d.totalsGWh, coal: i ? 1 : 100, hydro: i ? 1 : 0 } }));
+    expect(monthlyHistoryHighlights(weighted, 2026).hydro?.share).toBeCloseTo(19 / 138 * 100);
+  });
+
   it("finds the highest and lowest rolling seven-day average, not fixed calendar weeks", () => {
     const days = monthDays(2026, 5, 14).map((d, i) => ({ ...d, renewableShare: i < 7 ? 20 : 80 }));
     const result = historyHighlights(days.reverse());
