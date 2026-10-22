@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { hasHistoryNotes, defaultHistoryYear, historyYear, historyYears, monthlyHistoryHighlights, fmtHistoryRange, historyHighlights, isDailyDataStale, isPartialMonth, latestHistoryDate, latestHistoryYear, type DailyHistoryDay } from "./daily";
+import { hasHistoryNotes, defaultHistoryYear, historyYear, historyYears, monthlyHistoryHighlights, fmtHistoryRange, historyHighlights, isDailyDataStale, isPartialMonth, latestHistoryDate, latestHistoryYear, historyRecords, selectedHistoryYear, type DailyHistoryDay } from "./daily";
 
 function day(date: string, hoursAvailable = 24): DailyHistoryDay {
   return { date, hoursAvailable, totalGWh: 100, renewableShare: 50,
@@ -115,4 +115,38 @@ describe("Home daily history", () => {
     expect(latestHistoryYear([...history, day("2027-01-01", 12)]).map((d) => d.date)).toEqual(["2026-01-01", "2026-12-31"]);
     expect(latestHistoryYear([])).toEqual([]);
   });
+
+  it("computes record wind, solar and renewable-share days from complete days of the selected year only", () => {
+    const rec = (date: string, hoursAvailable: number, wind: number, solar: number, renewableShare: number): DailyHistoryDay => ({
+      ...day(date, hoursAvailable),
+      totalsGWh: { ...day(date, hoursAvailable).totalsGWh, wind, solar },
+      renewableShare,
+    });
+    const days = [
+      rec("2025-07-30", 24, 400, 400, 99),
+      rec("2026-07-30", 24, 263.12, 10, 40),
+      rec("2026-06-30", 24, 100, 40.81, 40),
+      rec("2026-05-29", 24, 500, 500, 99),
+      rec("2026-05-29", 24, 50, 5, 78.2),
+      rec("2026-08-01", 23, 999, 999, 99),
+    ];
+    expect(historyRecords(days, 2026)).toEqual({
+      year: 2026,
+      recordWindDay: { date: "2026-07-30", windGWh: 263.12 },
+      recordSolarDay: { date: "2026-06-30", solarGWh: 40.81 },
+      recordRenewableShareDay: { date: "2026-05-29", renewableShare: 78.2 },
+    });
+    expect(historyRecords(days, 2025)?.recordWindDay).toEqual({ date: "2025-07-30", windGWh: 400 });
+    expect(historyRecords(days, 2024)).toBeUndefined();
+    expect(historyRecords(days, undefined)).toBeUndefined();
+  });
+
+  it("uses the chosen year when it is one of the data years, otherwise the default year", () => {
+    const days = [...monthDays(2026, 1, 31), ...monthDays(2026, 2, 29), ...monthDays(2027, 1, 31)];
+    expect(selectedHistoryYear(days, undefined)).toBe(2026);
+    expect(selectedHistoryYear(days, 2027)).toBe(2027);
+    expect(selectedHistoryYear(days, 2025)).toBe(2026);
+    expect(selectedHistoryYear([], undefined)).toBeUndefined();
+  });
+
 });

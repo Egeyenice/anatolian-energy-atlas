@@ -1,7 +1,8 @@
+import { useMemo } from "react";
 import { Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import { ChartTooltip } from "@/components/ChartTooltip";
 import { DailyDataNote } from "@/components/DailyDataNote";
-import { fmtDate, latestHistoryDate, useDailyHistory, useDailyLatest, useDailyRecords, type DailySource } from "@/lib/daily";
+import { fmtDate, historyRecords, latestHistoryDate, selectedHistoryYear, useDailyHistory, useDailyLatest, type DailySource } from "@/lib/daily";
 import { fmt, SOURCE_COLORS, SOURCE_LABELS } from "@/lib/energy";
 
 const DAILY_SOURCES = ["coal", "gas", "other_fossil", "hydro", "wind", "solar", "other_renewables", "other"] as const;
@@ -9,17 +10,21 @@ const DAILY_SOURCES = ["coal", "gas", "other_fossil", "hydro", "wind", "solar", 
 const DAILY_LABELS: Record<DailySource, string> = { ...SOURCE_LABELS, other: "Other" };
 const DAILY_COLORS: Record<DailySource, string> = { ...SOURCE_COLORS, other: "var(--muted-foreground)" };
 
-export function YesterdaySection() {
+export function YesterdaySection({ yearChoice }: { yearChoice: number | undefined }) {
   const latest = useDailyLatest();
-  const records = useDailyRecords();
   const history = useDailyHistory();
 
-  // Hide the whole section gracefully if the live data cannot be loaded.
-  if (latest.status === "error" && records.status === "error") return null;
+  // Records are calculated from the same days the year tabs use, so both always agree.
+  const records = useMemo(
+    () => historyRecords(history.data ?? [], selectedHistoryYear(history.data ?? [], yearChoice)),
+    [history.data, yearChoice],
+  );
 
-  const pending = latest.status === "pending" || records.status === "pending";
+  // Hide the whole section gracefully if the live data cannot be loaded.
+  if (latest.status === "error" && history.status === "error") return null;
+
+  const pending = latest.status === "pending" || history.status === "pending";
   const d = latest.data;
-  const r = records.data;
 
   return (
     <section className="border-t border-border py-12">
@@ -90,29 +95,29 @@ export function YesterdaySection() {
                 note="Total generation"
               />
             )}
-            {r && (
+            {records && (
               <Stat
-                label={`This year's record wind day: ${fmtDate(r.recordWindDay.date)}`}
-                value={`${fmt(r.recordWindDay.windGWh)} GWh`}
+                label={`Record wind day in ${records.year}: ${fmtDate(records.recordWindDay.date)}`}
+                value={`${fmt(records.recordWindDay.windGWh)} GWh`}
                 note="Wind generation"
               />
             )}
-            {r && (
+            {records && (
               <Stat
-                label={`Record solar day: ${fmtDate(r.recordSolarDay.date)}`}
-                value={`${fmt(r.recordSolarDay.solarGWh)} GWh`}
+                label={`Record solar day in ${records.year}: ${fmtDate(records.recordSolarDay.date)}`}
+                value={`${fmt(records.recordSolarDay.solarGWh)} GWh`}
                 note="Solar generation"
               />
             )}
-            {r && (
+            {records && (
               <Stat
-                label={`Highest renewable share: ${fmtDate(r.recordRenewableShareDay.date)}`}
-                value={`${fmt(r.recordRenewableShareDay.renewableShare)}%`}
+                label={`Highest renewable share in ${records.year}: ${fmtDate(records.recordRenewableShareDay.date)}`}
+                value={`${fmt(records.recordRenewableShareDay.renewableShare)}%`}
                 note="Of daily generation"
               />
             )}
           </div>
-          {(d || r) && <DailyDataNote date={latestHistoryDate(history.data ?? [])} />}
+          {(d || records) && <DailyDataNote date={latestHistoryDate(history.data ?? [])} />}
         </>
       )}
     </section>
