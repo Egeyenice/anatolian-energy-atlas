@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { defaultHistoryYear, historyYear, historyYears, monthlyHistoryHighlights, fmtHistoryRange, historyHighlights, isDailyDataStale, isPartialMonth, latestHistoryDate, latestHistoryYear, type DailyHistoryDay } from "./daily";
+import { hasHistoryNotes, defaultHistoryYear, historyYear, historyYears, monthlyHistoryHighlights, fmtHistoryRange, historyHighlights, isDailyDataStale, isPartialMonth, latestHistoryDate, latestHistoryYear, type DailyHistoryDay } from "./daily";
 
 function day(date: string, hoursAvailable = 24): DailyHistoryDay {
   return { date, hoursAvailable, totalGWh: 100, renewableShare: 50,
@@ -11,6 +11,11 @@ const monthDays = (year: number, month: number, count: number) =>
 afterEach(() => vi.useRealTimers());
 
 describe("Home daily history", () => {
+  it("makes the year-specific written notes available only for 2026", () => {
+    expect(hasHistoryNotes(2026)).toBe(true);
+    expect(hasHistoryNotes(2025)).toBe(false);
+    expect(hasHistoryNotes(2027)).toBe(false);
+  });
   it("defaults to the most recent year with at least 60 distinct complete days", () => {
     const previous = [...monthDays(2026, 1, 31), ...monthDays(2026, 2, 28), day("2026-03-01")];
     const next = [...monthDays(2027, 1, 31), ...monthDays(2027, 2, 28)];

@@ -3,7 +3,7 @@ import { Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxi
 import { ChartTooltip } from "@/components/ChartTooltip";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { DailyDataNote } from "@/components/DailyDataNote";
-import { defaultHistoryYear, historyYear, historyYears, monthlyHistoryHighlights, fmtDate, fmtHistoryRange, historyHighlights, isPartialMonth, latestHistoryDate, useDailyHistory, type DailyHistoryDay, type DailySource } from "@/lib/daily";
+import { hasHistoryNotes, defaultHistoryYear, historyYear, historyYears, monthlyHistoryHighlights, fmtDate, fmtHistoryRange, historyHighlights, isPartialMonth, latestHistoryDate, useDailyHistory, type DailyHistoryDay, type DailySource } from "@/lib/daily";
 import { fmt, SOURCE_COLORS, SOURCE_LABELS } from "@/lib/energy";
 
 const DAILY_SOURCES = ["coal", "gas", "other_fossil", "hydro", "wind", "solar", "other_renewables", "other"] as const;
@@ -65,7 +65,7 @@ function Section({ kicker, title, children, dataThrough }: { kicker: string; tit
 }
 
 function YearNotes({ year, children }: { year: number; children: ReactNode }) {
-  if (year !== 2026) return null;
+  if (!hasHistoryNotes(year)) return null;
   return <div className="mt-6 max-w-3xl space-y-4 leading-relaxed text-foreground">
     <p className="text-xs font-semibold text-muted-foreground">Notes on 2026</p>
     {children}

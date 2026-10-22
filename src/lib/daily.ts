@@ -91,6 +91,10 @@ export function defaultHistoryYear(days: DailyHistoryDay[]): number | undefined 
     ?? years.find((year) => historyYear(days, year).length > 0);
 }
 
+export function hasHistoryNotes(year: number): boolean {
+  return year === 2026;
+}
+
 /** Rank source shares using aggregated generation, not averages of daily percentages. */
 export function monthlyHistoryHighlights(history: DailyHistoryDay[], year: number) {
   const months = new Map<string, DailyHistoryDay[]>();
