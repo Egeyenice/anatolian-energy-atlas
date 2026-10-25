@@ -13,4 +13,4 @@ Allow: /
 User-agent: *
 Allow: /
 
-Sitemap: https://anatolian-energy-atlas.lovable.app/sitemap.xml
+Sitemap: https://turkiye-energy-atlas.lovable.app/sitemap.xml
