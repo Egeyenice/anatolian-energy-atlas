@@ -1,3 +1,4 @@
+import { pageHead } from "@/lib/page-head";
 import { createFileRoute } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import { Area, AreaChart, CartesianGrid, Legend, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
@@ -7,16 +8,7 @@ import { ChartTooltip } from "@/components/ChartTooltip";
 import { CapacityComparison } from "@/components/CapacityComparison";
 
 export const Route = createFileRoute("/trends")({
-  head: () => ({
-    meta: [
-      { title: "Trends – Turkey Energy Atlas" },
-      { name: "description", content: "Türkiye's electricity generation by source over time, in TWh and as a share of the total." },
-      { property: "og:title", content: "Electricity trends in Türkiye – Turkey Energy Atlas" },
-      { property: "og:description", content: "Stacked charts of every source of electricity in Türkiye since 2000." },
-      { property: "og:type", content: "article" },
-      { name: "twitter:card", content: "summary_large_image" },
-    ],
-  }),
+  head: () => pageHead("Trends", "/trends", "Türkiye's electricity generation by source over time, in TWh and as a share of the total."),
   component: Trends,
 });
 

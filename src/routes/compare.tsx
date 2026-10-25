@@ -1,3 +1,4 @@
+import { pageHead } from "@/lib/page-head";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { Bar, BarChart, CartesianGrid, Cell, Line, LineChart, ReferenceLine, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
@@ -6,16 +7,7 @@ import { ChartTooltip } from "@/components/ChartTooltip";
 import { METRIC_LABELS, latestYear, ranking, timeSeries, useComparisonData, type Metric } from "@/lib/comparison";
 
 export const Route = createFileRoute("/compare")({
-  head: () => ({
-    meta: [
-      { title: "Compare – Turkey Energy Atlas" },
-      { name: "description", content: "How Türkiye's renewable share and carbon intensity of electricity compare with the EU, Germany, the US, China and others." },
-      { property: "og:title", content: "How does Türkiye compare? – Turkey Energy Atlas" },
-      { property: "og:description", content: "Türkiye's electricity next to other countries: renewable share and carbon intensity since 2000." },
-      { property: "og:type", content: "article" },
-      { name: "twitter:card", content: "summary_large_image" },
-    ],
-  }),
+  head: () => pageHead("Compare", "/compare", "How Türkiye's renewable share and carbon intensity of electricity compare with the EU, Germany, the US, China and others."),
   component: ComparePage,
 });
 

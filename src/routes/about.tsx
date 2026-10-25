@@ -1,18 +1,10 @@
+import { pageHead } from "@/lib/page-head";
 import { createFileRoute } from "@tanstack/react-router";
 import type { ReactNode } from "react";
 import { PageHeader } from "@/components/site";
 
 export const Route = createFileRoute("/about")({
-  head: () => ({
-    meta: [
-      { title: "About & Methodology – Turkey Energy Atlas" },
-      { name: "description", content: "Where the data comes from, how it was checked, and the limits of the Turkey Energy Atlas." },
-      { property: "og:title", content: "About & Methodology – Turkey Energy Atlas" },
-      { property: "og:description", content: "Where the data comes from, how it was checked, and the limits of the Turkey Energy Atlas." },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary_large_image" },
-    ],
-  }),
+  head: () => pageHead("About & Methodology", "/about", "Where the data comes from, how it was checked, and the limits of the Türkiye Energy Atlas."),
   component: About,
 });
 

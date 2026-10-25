@@ -6,3 +6,5 @@
 - [x] Add shared Home year tabs, eligible monthly highlights, and 2026-only notes; verify calculations and year switching.
 - [x] Calculate Home record cards from history.json with the shared year rule and update the Akkuyu map note; verify cards, popup and mobile layout.
 - [x] Rewrite the About page: new section order and headings, user's exact prose, mobile-friendly sources table, bullet lists; verify desktop and 375px.
+- [x] Polish site naming, page metadata, sharing cover and accent lightning favicon without changing prose, data or charts.
+- [x] Verify the Home-linked 404 and audit remaining visible placeholders across all pages; no rendered placeholders remain.

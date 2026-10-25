@@ -1,3 +1,4 @@
+import { pageHead } from "@/lib/page-head";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { Bar, BarChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
@@ -7,16 +8,7 @@ import { fmt, SOURCE_COLORS, SOURCE_LABELS } from "@/lib/energy";
 import { simulate, useSimulatorData, type SimInputs, type SimulatorData } from "@/lib/simulator";
 
 export const Route = createFileRoute("/simulator")({
-  head: () => ({
-    meta: [
-      { title: "Simulator – Turkey Energy Atlas" },
-      { name: "description", content: "What if Türkiye built more solar, wind or nuclear? A simplified model of the electricity mix, gas use and emissions." },
-      { property: "og:title", content: "Türkiye electricity simulator – Turkey Energy Atlas" },
-      { property: "og:description", content: "Explore how more solar, wind and nuclear capacity would change Türkiye's electricity mix, gas imports and emissions." },
-      { property: "og:type", content: "article" },
-      { name: "twitter:card", content: "summary_large_image" },
-    ],
-  }),
+  head: () => pageHead("Simulator", "/simulator", "What if Türkiye built more solar, wind or nuclear? A simplified model of the electricity mix, gas use and emissions."),
   component: SimulatorPage,
 });
 

@@ -15,7 +15,7 @@ export function SiteHeader() {
   return (
     <header className="border-b border-border bg-background">
       <div className="mx-auto flex max-w-5xl flex-col gap-3 px-5 py-4 md:flex-row md:items-center md:justify-between">
-        <Link to="/" className="font-serif text-xl font-bold text-primary">Turkey Energy Atlas</Link>
+        <Link to="/" className="font-serif text-xl font-bold text-primary">Türkiye Energy Atlas</Link>
         <nav className="-mx-1 flex gap-1 overflow-x-auto text-sm">
           {NAV.map((n) => (
             <Link

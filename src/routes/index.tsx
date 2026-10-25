@@ -1,3 +1,4 @@
+import { pageHead } from "@/lib/page-head";
 import { useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { computeStats, fmt, renewableShare, SOURCE_COLORS, SOURCE_LABELS, total, useEnergyData, type YearRow } from "@/lib/energy";
@@ -6,16 +7,7 @@ import { YesterdaySection } from "@/components/YesterdaySection";
 import { HomeDailySections } from "@/components/HomeDailySections";
 
 export const Route = createFileRoute("/")({
-  head: () => ({
-    meta: [
-      { title: "Turkey Energy Atlas – Where does Türkiye's electricity come from?" },
-      { name: "description", content: "A data story on how Türkiye generates its electricity and how the mix has changed since 2000." },
-      { property: "og:title", content: "Turkey Energy Atlas" },
-      { property: "og:description", content: "How Türkiye generates its electricity, and how it has changed since 2000." },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary_large_image" },
-    ],
-  }),
+  head: () => pageHead("Home", "/"),
   component: Index,
 });
 
@@ -36,7 +28,7 @@ function Index() {
   return (
     <div className="mx-auto max-w-5xl px-5">
       <section className="py-14 md:py-24">
-        <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-accent-foreground">Turkey Energy Atlas</p>
+        <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-accent-foreground">Türkiye Energy Atlas</p>
         <h1 className="max-w-3xl font-serif text-4xl font-bold leading-tight text-foreground md:text-6xl">
           Where does Türkiye's electricity come from?
         </h1>
