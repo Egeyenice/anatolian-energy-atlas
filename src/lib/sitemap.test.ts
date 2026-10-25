@@ -13,10 +13,10 @@ describe("Public sitemap", () => {
   });
 
   it("uses the published domain without fabricated modification dates", () => {
-    const xml = sitemapXML("https://anatolian-energy-atlas.lovable.app", [{ path: "/" }, { path: "/map" }]);
+    const xml = sitemapXML("https://turkiye-energy-atlas.lovable.app", [{ path: "/" }, { path: "/map" }]);
     const document = new DOMParser().parseFromString(xml, "application/xml");
     expect([...document.querySelectorAll("loc")].map((element) => element.textContent)).toEqual([
-      "https://anatolian-energy-atlas.lovable.app/", "https://anatolian-energy-atlas.lovable.app/map",
+      "https://turkiye-energy-atlas.lovable.app/", "https://turkiye-energy-atlas.lovable.app/map",
     ]);
     expect(document.querySelector("lastmod")).toBeNull();
   });
