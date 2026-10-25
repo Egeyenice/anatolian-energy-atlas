@@ -9,4 +9,4 @@
 - [x] Polish site naming, page metadata, sharing cover and accent lightning favicon without changing prose, data or charts.
 - [x] Verify the Home-linked 404 and audit remaining visible placeholders across all pages; no rendered placeholders remain.
 - [x] Verify server-sent social tags, correct the homepage title, and add a router-derived sitemap and robots directive without changing visible content; seven unique descriptions and all raw HTML tags verified, published cover confirmed, routing/sitemap tests passed.
-- [ ] Update the published domain in all URLs, verify all seven tab titles and server-sent sharing tags, and confirm the share JPEG is 1200×630 and under 300 KB without changing visible content.
+- [x] Update the published domain in all URLs; all seven titles, server-sent sharing tags, sitemap and robots verified, with a published 1200×630 JPEG of 58,660 bytes and 11 passing tests; visible content unchanged.
