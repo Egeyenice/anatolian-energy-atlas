@@ -1,7 +1,7 @@
 Türkiye Energy Atlas
 Where does Türkiye's electricity come from, and how is that changing?
 Türkiye Energy Atlas is a data-journalism website that tells the story of Türkiye's electricity system with real data: 25 years of generation by source, how droughts push the country toward imported fuels, why solar capacity grows faster than solar output, and what the grid looked like yesterday, hour by hour.
-🔗 Live site: https://anatolian-energy-atlas.lovable.app
+🔗 Live site: https://turkiye-energy-atlas.lovable.app
 ---
 What's on the site
 Page	What it shows
