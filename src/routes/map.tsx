@@ -9,6 +9,7 @@ import { Analysis, DataState, PageHeader, type AnalysisSection } from "@/compone
 const PlantsMap = lazy(() => import("@/components/PlantsMap"));
 
 export const Route = createFileRoute("/map")({
+  staticData: { sitemap: true },
   head: () => pageHead("Map", "/map", "An interactive map of Türkiye's largest power plants: hydro dams, coal, gas, solar and nuclear."),
   component: MapPage,
 });

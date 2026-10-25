@@ -8,6 +8,7 @@ import { ChartTooltip } from "@/components/ChartTooltip";
 import { CapacityComparison } from "@/components/CapacityComparison";
 
 export const Route = createFileRoute("/trends")({
+  staticData: { sitemap: true },
   head: () => pageHead("Trends", "/trends", "Türkiye's electricity generation by source over time, in TWh and as a share of the total."),
   component: Trends,
 });

@@ -8,6 +8,7 @@ import { fmt, SOURCE_COLORS, SOURCE_LABELS } from "@/lib/energy";
 import { simulate, useSimulatorData, type SimInputs, type SimulatorData } from "@/lib/simulator";
 
 export const Route = createFileRoute("/simulator")({
+  staticData: { sitemap: true },
   head: () => pageHead("Simulator", "/simulator", "What if Türkiye built more solar, wind or nuclear? A simplified model of the electricity mix, gas use and emissions."),
   component: SimulatorPage,
 });

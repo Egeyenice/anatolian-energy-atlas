@@ -4,6 +4,7 @@ import type { ReactNode } from "react";
 import { PageHeader } from "@/components/site";
 
 export const Route = createFileRoute("/about")({
+  staticData: { sitemap: true },
   head: () => pageHead("About & Methodology", "/about", "Where the data comes from, how it was checked, and the limits of the Türkiye Energy Atlas."),
   component: About,
 });

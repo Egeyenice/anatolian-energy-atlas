@@ -8,3 +8,4 @@
 - [x] Rewrite the About page: new section order and headings, user's exact prose, mobile-friendly sources table, bullet lists; verify desktop and 375px.
 - [x] Polish site naming, page metadata, sharing cover and accent lightning favicon without changing prose, data or charts.
 - [x] Verify the Home-linked 404 and audit remaining visible placeholders across all pages; no rendered placeholders remain.
+- [x] Verify server-sent social tags, correct the homepage title, and add a router-derived sitemap and robots directive without changing visible content; seven unique descriptions and all raw HTML tags verified, published cover confirmed, routing/sitemap tests passed.
