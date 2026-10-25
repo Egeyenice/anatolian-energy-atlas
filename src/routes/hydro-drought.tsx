@@ -8,6 +8,7 @@ import { Analysis, ChartCard, DataState, PageHeader } from "@/components/site";
 import { ChartTooltip } from "@/components/ChartTooltip";
 
 export const Route = createFileRoute("/hydro-drought")({
+  staticData: { sitemap: true },
   head: () => pageHead("Hydro & Drought", "/hydro-drought", "Hydropower generation in Türkiye, drought years, and whether coal and gas fill the gap."),
   component: Hydro,
 });

@@ -7,6 +7,7 @@ import { ChartTooltip } from "@/components/ChartTooltip";
 import { METRIC_LABELS, latestYear, ranking, timeSeries, useComparisonData, type Metric } from "@/lib/comparison";
 
 export const Route = createFileRoute("/compare")({
+  staticData: { sitemap: true },
   head: () => pageHead("Compare", "/compare", "How Türkiye's renewable share and carbon intensity of electricity compare with the EU, Germany, the US, China and others."),
   component: ComparePage,
 });

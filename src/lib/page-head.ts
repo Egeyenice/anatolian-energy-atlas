@@ -5,7 +5,7 @@ const SITE_DESCRIPTION = "How Türkiye generates its electricity: 25 years of da
 
 /** Leaf-only metadata: each page owns its canonical URL and sharing tags. */
 export function pageHead(page: string, path: string, description = SITE_DESCRIPTION) {
-  const title = `${page} – ${SITE_NAME}`;
+  const title = page === "Home" ? SITE_NAME : `${page} – ${SITE_NAME}`;
   const shareTitle = page === "Home" ? SITE_NAME : title;
   return {
     meta: [

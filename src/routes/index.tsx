@@ -7,6 +7,7 @@ import { YesterdaySection } from "@/components/YesterdaySection";
 import { HomeDailySections } from "@/components/HomeDailySections";
 
 export const Route = createFileRoute("/")({
+  staticData: { sitemap: true },
   head: () => pageHead("Home", "/"),
   component: Index,
 });
