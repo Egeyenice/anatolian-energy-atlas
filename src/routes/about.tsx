@@ -150,10 +150,6 @@ function SourceTable() {
           ))}
         </tbody>
       </table>
-      <p className="mt-4 text-sm text-muted-foreground">
-        Data: <a className="underline" href="https://ember-energy.org" target="_blank" rel="noreferrer">Ember</a>, via{" "}
-        <a className="underline" href="https://ourworldindata.org" target="_blank" rel="noreferrer">Our World in Data</a> (CC BY 4.0)
-      </p>
     </div>
   );
 }
