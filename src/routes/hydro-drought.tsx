@@ -1,3 +1,4 @@
+import { pageHead } from "@/lib/page-head";
 import { createFileRoute } from "@tanstack/react-router";
 import { useMemo } from "react";
 import { Bar, BarChart, CartesianGrid, Cell, LabelList, Legend, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
@@ -7,16 +8,7 @@ import { Analysis, ChartCard, DataState, PageHeader } from "@/components/site";
 import { ChartTooltip } from "@/components/ChartTooltip";
 
 export const Route = createFileRoute("/hydro-drought")({
-  head: () => ({
-    meta: [
-      { title: "Hydro & Drought – Turkey Energy Atlas" },
-      { name: "description", content: "Hydropower generation in Türkiye, drought years, and whether coal and gas fill the gap." },
-      { property: "og:title", content: "Hydro & Drought – Turkey Energy Atlas" },
-      { property: "og:description", content: "Does fossil generation rise when Türkiye's hydropower falls in dry years?" },
-      { property: "og:type", content: "article" },
-      { name: "twitter:card", content: "summary_large_image" },
-    ],
-  }),
+  head: () => pageHead("Hydro & Drought", "/hydro-drought", "Hydropower generation in Türkiye, drought years, and whether coal and gas fill the gap."),
   component: Hydro,
 });
 

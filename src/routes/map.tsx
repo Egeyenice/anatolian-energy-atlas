@@ -1,3 +1,4 @@
+import { pageHead } from "@/lib/page-head";
 import { createFileRoute } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { ClientOnly } from "@tanstack/react-router";
@@ -8,16 +9,7 @@ import { Analysis, DataState, PageHeader, type AnalysisSection } from "@/compone
 const PlantsMap = lazy(() => import("@/components/PlantsMap"));
 
 export const Route = createFileRoute("/map")({
-  head: () => ({
-    meta: [
-      { title: "Map – Turkey Energy Atlas" },
-      { name: "description", content: "An interactive map of Türkiye's largest power plants: hydro dams, coal, gas, solar and nuclear." },
-      { property: "og:title", content: "Map – Turkey Energy Atlas" },
-      { property: "og:description", content: "Where Türkiye's largest power plants are, and what they burn." },
-      { property: "og:type", content: "article" },
-      { name: "twitter:card", content: "summary_large_image" },
-    ],
-  }),
+  head: () => pageHead("Map", "/map", "An interactive map of Türkiye's largest power plants: hydro dams, coal, gas, solar and nuclear."),
   component: MapPage,
 });
 
