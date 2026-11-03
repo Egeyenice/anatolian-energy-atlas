@@ -5141,13 +5141,13 @@
       "coal": 268.71,
       "gas": 148.25,
       "hydro": 283.79,
-      "wind": 95.49,
-      "solar": 13.77,
-      "other_renewables": 50.21,
+      "wind": 95.51,
+      "solar": 13.93,
+      "other_renewables": 50.23,
       "other_fossil": 1.89,
       "other": 2.5
     },
-    "totalGWh": 864.61,
+    "totalGWh": 864.81,
     "renewableShare": 51.3
   },
   {
@@ -5156,15 +5156,15 @@
     "unit": "MWh",
     "totalsGWh": {
       "coal": 277.97,
-      "gas": 148.03,
-      "hydro": 292.21,
+      "gas": 148.19,
+      "hydro": 292.22,
       "wind": 50.63,
-      "solar": 16.67,
-      "other_renewables": 51.61,
+      "solar": 16.73,
+      "other_renewables": 51.69,
       "other_fossil": 1.8,
       "other": 2.47
     },
-    "totalGWh": 841.39,
+    "totalGWh": 841.69,
     "renewableShare": 48.9
   },
   {
@@ -5172,16 +5172,33 @@
     "hoursAvailable": 24,
     "unit": "MWh",
     "totalsGWh": {
-      "coal": 253.11,
-      "gas": 81.64,
+      "coal": 253.35,
+      "gas": 82.16,
       "hydro": 253.27,
-      "wind": 86.49,
-      "solar": 17.31,
-      "other_renewables": 51.95,
-      "other_fossil": 1.74,
+      "wind": 86.5,
+      "solar": 17.46,
+      "other_renewables": 52.33,
+      "other_fossil": 1.79,
       "other": 2.41
     },
-    "totalGWh": 747.92,
+    "totalGWh": 749.26,
     "renewableShare": 54.7
+  },
+  {
+    "date": "2026-11-02",
+    "hoursAvailable": 24,
+    "unit": "MWh",
+    "totalsGWh": {
+      "coal": 290.62,
+      "gas": 142.86,
+      "hydro": 283.33,
+      "wind": 73.26,
+      "solar": 19.74,
+      "other_renewables": 51.62,
+      "other_fossil": 1.86,
+      "other": 2.45
+    },
+    "totalGWh": 865.74,
+    "renewableShare": 49.4
   }
 ]
