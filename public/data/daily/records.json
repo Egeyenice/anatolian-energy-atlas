@@ -1,9 +1,9 @@
 {
   "year": 2026,
-  "daysCounted": 319,
+  "daysCounted": 320,
   "recordWindDay": {
     "date": "2026-11-13",
-    "windGWh": 274.29
+    "windGWh": 274.37
   },
   "recordSolarDay": {
     "date": "2026-06-30",
