@@ -5495,33 +5495,33 @@
     "hoursAvailable": 24,
     "unit": "MWh",
     "totalsGWh": {
-      "coal": 273.19,
-      "gas": 54.19,
-      "hydro": 270.13,
-      "wind": 238.26,
-      "solar": 14.98,
-      "other_renewables": 49.4,
+      "coal": 273.28,
+      "gas": 54.23,
+      "hydro": 270.59,
+      "wind": 239.89,
+      "solar": 15.28,
+      "other_renewables": 49.84,
       "other_fossil": 2.08,
       "other": 2.1
     },
-    "totalGWh": 904.34,
-    "renewableShare": 63.3
+    "totalGWh": 907.29,
+    "renewableShare": 63.4
   },
   {
     "date": "2026-11-21",
     "hoursAvailable": 24,
     "unit": "MWh",
     "totalsGWh": {
-      "coal": 311.11,
-      "gas": 75.44,
-      "hydro": 269.65,
-      "wind": 135.5,
-      "solar": 14.69,
-      "other_renewables": 47.34,
+      "coal": 321.52,
+      "gas": 75.84,
+      "hydro": 272.67,
+      "wind": 141.97,
+      "solar": 14.93,
+      "other_renewables": 50.49,
       "other_fossil": 2.1,
-      "other": 1.61
+      "other": 1.76
     },
-    "totalGWh": 857.45,
+    "totalGWh": 881.26,
     "renewableShare": 54.5
   },
   {
@@ -5529,16 +5529,33 @@
     "hoursAvailable": 24,
     "unit": "MWh",
     "totalsGWh": {
-      "coal": 281.98,
-      "gas": 60.69,
-      "hydro": 271.32,
-      "wind": 59.86,
-      "solar": 16.7,
-      "other_renewables": 47.57,
+      "coal": 296.21,
+      "gas": 61.61,
+      "hydro": 279.23,
+      "wind": 62.41,
+      "solar": 17.23,
+      "other_renewables": 52.59,
       "other_fossil": 2.09,
-      "other": 1.65
+      "other": 1.9
     },
-    "totalGWh": 741.87,
-    "renewableShare": 53.3
+    "totalGWh": 773.27,
+    "renewableShare": 53.2
+  },
+  {
+    "date": "2026-11-23",
+    "hoursAvailable": 24,
+    "unit": "MWh",
+    "totalsGWh": {
+      "coal": 248.98,
+      "gas": 45.9,
+      "hydro": 280.62,
+      "wind": 244.77,
+      "solar": 17.43,
+      "other_renewables": 51.29,
+      "other_fossil": 2.15,
+      "other": 1.91
+    },
+    "totalGWh": 893.05,
+    "renewableShare": 66.5
   }
 ]
